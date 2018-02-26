@@ -4,8 +4,7 @@
   "description": "Mandatory exercise",
   "main": "index.js",
   "scripts": {
-    "babel": "babel --presets es2015 src/main.js -o build/main.js",
-    "start": "http-server"
+    "start": "webpack && http-server"
   },
   "repository": {
     "type": "git",
@@ -18,11 +17,12 @@
   },
   "homepage": "https://github.com/Robintorn/chat-application#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "http-server": "^0.11.1"
-  },
-  "dependencies": {
-    "babel-preset-es2015": "^6.24.1"
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "firebase": "^4.10.1",
+    "http-server": "^0.11.1",
+    "webpack": "^2.1.0-beta.22",
+    "webpack-cli": "^2.0.9"
   }
 }

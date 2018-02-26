@@ -6,8 +6,6 @@ Edit html in build
 ```Run npm install```
 
 ### When you've done edits
-```npm run babel```
-##### Followed by
 ``npm run start``
 
 ##### Navigate to 
