@@ -1,5 +1,7 @@
 import * as firebase from 'firebase';
 
+let userCredentials = {};
+
 export default class {
     constructor() {
 
@@ -62,5 +64,36 @@ export default class {
                 console.log("Update completed");
             }
         });
+    }
+
+    auth(type, email, password) {
+        switch (type) {
+            case "createUserWithEmailPass": {
+                firebase.auth().createUserWithEmailAndPassword(email, password).catch((err) => {
+                    console.log(err);
+                });
+                break;
+            }
+
+            case "signInUserEmailPass": {
+                firebase.auth().signInWithEmailAndPassword(email, password).catch((err) => {
+                   console.log(err);
+                });
+            }
+        }
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user) {
+                userCredentials = {
+                    "displayName": user.displayName,
+                    "email": user.email,
+                    "img_url": user.photoURL
+                };
+            }
+        });
+    }
+
+    get credentials() {
+        return userCredentials;
     }
 }
