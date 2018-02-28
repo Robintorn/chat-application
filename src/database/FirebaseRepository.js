@@ -1,7 +1,5 @@
 import * as firebase from 'firebase';
 
-let userCredentials = {};
-
 export default class {
     constructor() {
 
@@ -66,34 +64,48 @@ export default class {
         });
     }
 
-    auth(type, email, password) {
+    // if using signing in with github, enter null as parameter.
+    auth(type, email, password, func) {
+        this.database();
         switch (type) {
             case "createUserWithEmailPass": {
                 firebase.auth().createUserWithEmailAndPassword(email, password).catch((err) => {
-                    console.log(err);
+                    console.error(err);
                 });
                 break;
             }
 
-            case "signInUserEmailPass": {
+            case "signInUserWithEmailPass": {
                 firebase.auth().signInWithEmailAndPassword(email, password).catch((err) => {
-                   console.log(err);
+                   console.error(err);
+                });
+                break;
+            }
+
+            case "signInWithGithub": {
+                let provider = new firebase.auth.GithubAuthProvider();
+                firebase.auth().signInWithPopup(provider).then((result) => {
+                    /*
+                    userCredentials = {
+                        "token": result.credential.accessToken,
+                        "user": result.user
+                    };
+                    */
+                }).catch((err) => {
+                    console.error(err);
                 });
             }
         }
 
         firebase.auth().onAuthStateChanged((user) => {
             if(user) {
-                userCredentials = {
+                func({
                     "displayName": user.displayName,
                     "email": user.email,
-                    "img_url": user.photoURL
-                };
+                    "img_url": user.photoURL,
+                    "uid": user.uid
+                });
             }
         });
-    }
-
-    get credentials() {
-        return userCredentials;
     }
 }

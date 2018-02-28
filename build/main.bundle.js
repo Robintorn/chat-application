@@ -14454,7 +14454,7 @@ var _class = function () {
             });
         }
 
-        // Be careful on using post, as till will add a new node and erase all other in that child.
+        // Be careful on using post on data that already exists.
 
     }, {
         key: "postData",
@@ -14476,6 +14476,57 @@ var _class = function () {
                     console.error(err);
                 } else {
                     console.log("Update completed");
+                }
+            });
+        }
+
+        // if using signing in with github, enter null as parameter.
+
+    }, {
+        key: "auth",
+        value: function auth(type, email, password, func) {
+            this.database();
+            switch (type) {
+                case "createUserWithEmailPass":
+                    {
+                        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
+                            console.error(err);
+                        });
+                        break;
+                    }
+
+                case "signInUserWithEmailPass":
+                    {
+                        firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
+                            console.error(err);
+                        });
+                        break;
+                    }
+
+                case "signInWithGithub":
+                    {
+                        var provider = new firebase.auth.GithubAuthProvider();
+                        firebase.auth().signInWithPopup(provider).then(function (result) {
+                            /*
+                            userCredentials = {
+                                "token": result.credential.accessToken,
+                                "user": result.user
+                            };
+                            */
+                        }).catch(function (err) {
+                            console.error(err);
+                        });
+                    }
+            }
+
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    func({
+                        "displayName": user.displayName,
+                        "email": user.email,
+                        "img_url": user.photoURL,
+                        "uid": user.uid
+                    });
                 }
             });
         }
@@ -29717,16 +29768,18 @@ var testDiv = document.getElementById('test');
 testDiv.style.backgroundColor = "red";
 testDiv.innerText = "CLICK ME";
 
-function WhatIWantToDoWithTheResult(x) {
-    console.log(x);
-}
-
 testDiv.addEventListener('click', function () {
     var fire = new _FirebaseRepository2.default();
 
     // The url you want to point to, The event, what you want to do with the result (see function)
-    fire.getData('/users', 'value', WhatIWantToDoWithTheResult);
+    fire.getData('/users', 'value', function (x) {
+        console.log(x);
+    }); // WhatIWantToDoWithTheResult
 
+    // careful on using this one on already existing data.
+
+    // you can use this in your logic/classes folder. only using getData('/', 'something', {});
+    // This is just a demo.
     fire.postData('/', 'users/hello', {
         "Jeppan": {
             leader: "YEPP",
@@ -29745,6 +29798,10 @@ testDiv.addEventListener('click', function () {
             leader: "Hell YEAH",
             cool: "TOTALLY"
         }
+    });
+
+    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
+        console.log(userCredentials);
     });
 });
 

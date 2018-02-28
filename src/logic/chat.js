@@ -5,10 +5,20 @@ class Chat extends FirebaseRepository {
         super();
     }
 
+    sendMessage() {
+        this.auth('signInUserWithEmailPass', "hello@gmail.com", "hellu123");
+
+        this.getData('/rooms/' + room_id + 'messages', 'value', (response) => {
+            render(response.chatMessage, )
+        });
+    }
+
     render() {
-        return `
-            <h1>This is the chat JEPPAN!</h1>
-        `;
+        this.getData('/rooms/' + room_id + 'messages', 'value', (response) => {
+            return `
+                <h1>${response.chatMsg}</h1>
+            `;
+        });
     }
 }
 
