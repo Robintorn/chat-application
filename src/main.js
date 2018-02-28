@@ -4,7 +4,8 @@ let testDiv = document.getElementById('test');
 testDiv.style.backgroundColor = "red";
 testDiv.innerText = "CLICK ME";
 
-let signin = document.getElementById("login");
+let login = document.getElementById("login");
+let signup = document.getElementById("signup");
 
 testDiv.addEventListener('click', () => {
     let fire = new FirebaseRepo();
@@ -20,6 +21,10 @@ testDiv.addEventListener('click', () => {
     // This is just a demo.
 });
 
-signin.addEventListener("click", () => {
+login.addEventListener("click", () => {
+    
+});
+
+signup.addEventListener("click", () => {
     
 });

@@ -29784,18 +29784,7 @@ testDiv.addEventListener('click', function () {
     // This is just a demo.
 });
 
-function login() {
-    var Txtemail = document.getElementById("email");
-    var Txtpassword = document.getElementById("password");
-
-    var email = Txtemail.value;
-    var password = Txtpassword.value;
-    firebase.auth("createUserWithEmailPass", email, password);
-}
-
-signin.addEventListener("click", function () {
-    login();
-});
+signin.addEventListener("click", function () {});
 
 /***/ }
 /******/ ]);

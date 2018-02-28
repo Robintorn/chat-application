@@ -1,13 +1,14 @@
 import FirebaseRepository from "../database/FirebaseRepository";
 
+let Txtemail = document.getElementById("email");
+let Txtpassword = document.getElementById("password");
+
 class Login extends FirebaseRepository {
     constructor() {
         super();
     }
 
     login(){
-        let Txtemail = document.getElementById("email");
-        let Txtpassword = document.getElementById("password");
 
         let email = Txtemail.value;
         let password = Txtpassword.value;
