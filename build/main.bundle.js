@@ -29802,6 +29802,7 @@ testDiv.addEventListener('click', function () {
 
     fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
         console.log(userCredentials);
+        console.log("Hello");
     });
 });
 
