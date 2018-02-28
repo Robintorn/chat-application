@@ -4,6 +4,7 @@ let testDiv = document.getElementById('test');
 testDiv.style.backgroundColor = "red";
 testDiv.innerText = "CLICK ME";
 
+let signin = document.getElementById("login");
 
 testDiv.addEventListener('click', () => {
     let fire = new FirebaseRepo();
@@ -17,28 +18,8 @@ testDiv.addEventListener('click', () => {
 
     // you can use this in your logic/classes folder. only using getData('/', 'something', {});
     // This is just a demo.
-    fire.postData('/', 'users/hello', {
-        "Jeppan": {
-            leader: "YEPP",
-            cool: "YEPP"
-        }
-    });
-    fire.updateData('/', 'users', {
-        "Jeppan": {
-            leader: "WTF?",
-            cool: "KIND OF"
-        }
-    });
+});
 
-    fire.updateData('/', 'users', {
-        "Robban": {
-            leader: "Hell YEAH",
-            cool: "TOTALLY"
-        }
-    });
-
-    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', (userCredentials) => {
-        console.log(userCredentials);
-    });
-
+signin.addEventListener("click", () => {
+    
 });

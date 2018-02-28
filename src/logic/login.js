@@ -5,6 +5,15 @@ class Login extends FirebaseRepository {
         super();
     }
 
+    login(){
+        let Txtemail = document.getElementById("email");
+        let Txtpassword = document.getElementById("password");
+
+        let email = Txtemail.value;
+        let password = Txtpassword.value;
+        this.auth("createUserWithEmailPass", email, password);
+    }
+
     render() {
         return `
             <h1>This is the login!</h1>
@@ -12,4 +21,4 @@ class Login extends FirebaseRepository {
     }
 }
 
-export default Login
+export default Login;

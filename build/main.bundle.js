@@ -29768,6 +29768,8 @@ var testDiv = document.getElementById('test');
 testDiv.style.backgroundColor = "red";
 testDiv.innerText = "CLICK ME";
 
+var signin = document.getElementById("login");
+
 testDiv.addEventListener('click', function () {
     var fire = new _FirebaseRepository2.default();
 
@@ -29780,29 +29782,19 @@ testDiv.addEventListener('click', function () {
 
     // you can use this in your logic/classes folder. only using getData('/', 'something', {});
     // This is just a demo.
-    fire.postData('/', 'users/hello', {
-        "Jeppan": {
-            leader: "YEPP",
-            cool: "YEPP"
-        }
-    });
-    fire.updateData('/', 'users', {
-        "Jeppan": {
-            leader: "WTF?",
-            cool: "KIND OF"
-        }
-    });
+});
 
-    fire.updateData('/', 'users', {
-        "Robban": {
-            leader: "Hell YEAH",
-            cool: "TOTALLY"
-        }
-    });
+function login() {
+    var Txtemail = document.getElementById("email");
+    var Txtpassword = document.getElementById("password");
 
-    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
-        console.log(userCredentials);
-    });
+    var email = Txtemail.value;
+    var password = Txtpassword.value;
+    firebase.auth("createUserWithEmailPass", email, password);
+}
+
+signin.addEventListener("click", function () {
+    login();
 });
 
 /***/ }
