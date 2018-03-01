@@ -29896,11 +29896,18 @@ login.addEventListener("click", function () {
     login.login(email.value, password.value);
 });
 
+<<<<<<< HEAD
 signup.addEventListener("click", function () {
     var email = document.getElementById("email");
     var password = document.getElementById("password");
     var register = new _register2.default();
     register.register(email.value, password.value);
+=======
+    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
+        console.log(userCredentials);
+        console.log("Hello");
+    });
+>>>>>>> master
 });
 
 /***/ }
