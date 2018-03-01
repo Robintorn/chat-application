@@ -114,6 +114,8 @@ export default class {
                         "uid": user.uid
                     });
                 }
+            } else {
+                return false;
             }
         });
     }
