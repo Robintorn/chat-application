@@ -1,10 +1,6 @@
 import * as firebase from 'firebase';
 
 export default class {
-    constructor() {
-
-    }
-
     get config() {
         return {
             apiKey: "AIzaSyC99W8Q0Ljie57VFr4lPpAB8-uZlJDQ0dY",
@@ -49,6 +45,16 @@ export default class {
                 console.error(err);
             } else {
                 console.log("Post completed");
+            }
+        });
+    }
+
+    pushData(urlPointer, obj) {
+        this.database().ref(urlPointer).push(obj, (err) => {
+            if(err) {
+                console.error(err);
+            } else {
+                console.log("Push completed");
             }
         });
     }

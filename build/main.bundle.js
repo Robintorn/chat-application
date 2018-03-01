@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 167);
+/******/ 	return __webpack_require__(__webpack_require__.s = 168);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -14402,7 +14402,7 @@ module.exports = g;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -14410,144 +14410,60 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _firebase = __webpack_require__(163);
+var _FirebaseRepository2 = __webpack_require__(167);
 
-var firebase = _interopRequireWildcard(_firebase);
+var _FirebaseRepository3 = _interopRequireDefault(_FirebaseRepository2);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _class = function () {
-    function _class() {
-        _classCallCheck(this, _class);
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Chat = function (_FirebaseRepository) {
+    _inherits(Chat, _FirebaseRepository);
+
+    function Chat() {
+        _classCallCheck(this, Chat);
+
+        return _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this));
     }
 
-    _createClass(_class, [{
-        key: "database",
-        value: function database() {
-            var _this = this;
-
-            try {
-                firebase.initializeApp(this.config);
-            } catch (err) {
-                // disable multiple implementations (enables hot-reloading)
-                if (!/already exists/.test(err.message)) {
-                    console.error(err);
-                    // Try to solve the error if there are any.
-                    firebase.app().delete().then(function () {
-                        console.warn("reinitializing firebase app");
-                        return firebase.initializeApp(_this.config);
+    _createClass(Chat, [{
+        key: 'sendMessage',
+        value: function sendMessage(room, msg, user) {
+            this.pushData('/messages/room/' + room, {
+                message: msg,
+                displayName: user,
+                timestamp: new Date()
+            });
+        }
+    }, {
+        key: 'render',
+        value: function render(room, renderId) {
+            console.log(room);
+            var index = 0;
+            this.getData('/messages/room/' + room, 'value', function (response) {
+                console.log(response);
+                if (index === 0) {
+                    Object.keys(response).map(function (item) {
+                        document.getElementById(renderId).innerHTML += '\n                        <div>\n                            <h3>' + item[0] + ' | ' + item[1] + '</h3>\n                            <p>' + item[2] + '</p>\n                        </div>\n                    ';
+                        index++;
                     });
-                }
-            }
-            return firebase.database();
-        }
-    }, {
-        key: "getData",
-        value: function getData(urlPointer, event, func) {
-            this.database().ref(urlPointer).on(event, function (snapshot) {
-                func(snapshot.val());
-            }, function (err) {
-                // we can't save the user this time, as this is a super generic method.
-                console.error(err);
-            });
-        }
-
-        // Be careful on using post on data that already exists.
-
-    }, {
-        key: "postData",
-        value: function postData(urlPointer, child, obj) {
-            this.database().ref(urlPointer).child(child).set(obj, function (err) {
-                if (err) {
-                    console.error(err);
                 } else {
-                    console.log("Post completed");
+                    document.getElementById(renderId).innerHTML += '\n                    <div>\n                        <h3>' + response[index][0] + ' | ' + response[index][1] + '</h3>\n                        <p>' + response[index][2] + '</p>\n                    </div>\n                ';
+                    index++;
                 }
             });
-        }
-    }, {
-        key: "updateData",
-        value: function updateData(urlPointer, child, updateRow) {
-            // Update row {"nickname" : "Jeppan"}
-            this.database().ref(urlPointer).child(child).update(updateRow, function (err) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log("Update completed");
-                }
-            });
-        }
-
-        // if using signing in with github, enter null as parameter.
-
-    }, {
-        key: "auth",
-        value: function auth(type, email, password, func) {
-            this.database();
-            switch (type) {
-                case "createUserWithEmailPass":
-                    {
-                        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
-                            console.error(err);
-                        });
-                        break;
-                    }
-
-                case "signInUserWithEmailPass":
-                    {
-                        firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
-                            console.error(err);
-                        });
-                        break;
-                    }
-
-                case "signInWithGithub":
-                    {
-                        var provider = new firebase.auth.GithubAuthProvider();
-                        firebase.auth().signInWithPopup(provider).then(function (result) {
-                            /*
-                            userCredentials = {
-                                "token": result.credential.accessToken,
-                                "user": result.user
-                            };
-                            */
-                        }).catch(function (err) {
-                            console.error(err);
-                        });
-                    }
-            }
-
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    func({
-                        "displayName": user.displayName,
-                        "email": user.email,
-                        "img_url": user.photoURL,
-                        "uid": user.uid
-                    });
-                }
-            });
-        }
-    }, {
-        key: "config",
-        get: function get() {
-            return {
-                apiKey: "AIzaSyC99W8Q0Ljie57VFr4lPpAB8-uZlJDQ0dY",
-                authDomain: "chatapp-151d0.firebaseapp.com",
-                databaseURL: "https://chatapp-151d0.firebaseio.com",
-                projectId: "chatapp-151d0",
-                storageBucket: "chatapp-151d0.appspot.com",
-                messagingSenderId: "105631242194"
-            };
         }
     }]);
 
-    return _class;
-}();
+    return Chat;
+}(_FirebaseRepository3.default);
 
-exports.default = _class;
+exports.default = Chat;
 
 /***/ },
 /* 85 */
@@ -29756,54 +29672,186 @@ module.exports = Promise;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebase = __webpack_require__(163);
+
+var firebase = _interopRequireWildcard(_firebase);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+    function _class() {
+        _classCallCheck(this, _class);
+    }
+
+    _createClass(_class, [{
+        key: "database",
+        value: function database() {
+            var _this = this;
+
+            try {
+                firebase.initializeApp(this.config);
+            } catch (err) {
+                // disable multiple implementations (enables hot-reloading)
+                if (!/already exists/.test(err.message)) {
+                    console.error(err);
+                    // Try to solve the error if there are any.
+                    firebase.app().delete().then(function () {
+                        console.warn("reinitializing firebase app");
+                        return firebase.initializeApp(_this.config);
+                    });
+                }
+            }
+            return firebase.database();
+        }
+    }, {
+        key: "getData",
+        value: function getData(urlPointer, event, func) {
+            this.database().ref(urlPointer).on(event, function (snapshot) {
+                func(snapshot.val());
+            }, function (err) {
+                // we can't save the user this time, as this is a super generic method.
+                console.error(err);
+            });
+        }
+
+        // Be careful on using post on data that already exists.
+
+    }, {
+        key: "postData",
+        value: function postData(urlPointer, child, obj) {
+            this.database().ref(urlPointer).child(child).set(obj, function (err) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("Post completed");
+                }
+            });
+        }
+    }, {
+        key: "pushData",
+        value: function pushData(urlPointer, obj) {
+            this.database().ref(urlPointer).push(obj, function (err) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("Push completed");
+                }
+            });
+        }
+    }, {
+        key: "updateData",
+        value: function updateData(urlPointer, child, updateRow) {
+            // Update row {"nickname" : "Jeppan"}
+            this.database().ref(urlPointer).child(child).update(updateRow, function (err) {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("Update completed");
+                }
+            });
+        }
+
+        // if using signing in with github, enter null as parameter.
+
+    }, {
+        key: "auth",
+        value: function auth(type, email, password, func) {
+            this.database();
+            switch (type) {
+                case "createUserWithEmailPass":
+                    {
+                        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
+                            console.error(err);
+                        });
+                        break;
+                    }
+
+                case "signInUserWithEmailPass":
+                    {
+                        firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
+                            console.error(err);
+                        });
+                        break;
+                    }
+
+                case "signInWithGithub":
+                    {
+                        var provider = new firebase.auth.GithubAuthProvider();
+                        firebase.auth().signInWithPopup(provider).then(function (result) {
+                            /*
+                            userCredentials = {
+                                "token": result.credential.accessToken,
+                                "user": result.user
+                            };
+                            */
+                        }).catch(function (err) {
+                            console.error(err);
+                        });
+                    }
+            }
+
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    func({
+                        "displayName": user.displayName,
+                        "email": user.email,
+                        "img_url": user.photoURL,
+                        "uid": user.uid
+                    });
+                }
+            });
+        }
+    }, {
+        key: "config",
+        get: function get() {
+            return {
+                apiKey: "AIzaSyC99W8Q0Ljie57VFr4lPpAB8-uZlJDQ0dY",
+                authDomain: "chatapp-151d0.firebaseapp.com",
+                databaseURL: "https://chatapp-151d0.firebaseio.com",
+                projectId: "chatapp-151d0",
+                storageBucket: "chatapp-151d0.appspot.com",
+                messagingSenderId: "105631242194"
+            };
+        }
+    }]);
+
+    return _class;
+}();
+
+exports.default = _class;
+
+/***/ },
+/* 168 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
 'use strict';
 
-var _FirebaseRepository = __webpack_require__(84);
+var _chat = __webpack_require__(84);
 
-var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
+var _chat2 = _interopRequireDefault(_chat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var testDiv = document.getElementById('test');
-testDiv.style.backgroundColor = "red";
-testDiv.innerText = "CLICK ME";
+document.addEventListener('DOMContentLoaded', function () {
+    var chat = new _chat2.default();
+    console.log("Im here");
+    chat.render('general', 'chat-window');
+});
 
-testDiv.addEventListener('click', function () {
-    var fire = new _FirebaseRepository2.default();
-
-    // The url you want to point to, The event, what you want to do with the result (see function)
-    fire.getData('/users', 'value', function (x) {
-        console.log(x);
-    }); // WhatIWantToDoWithTheResult
-
-    // careful on using this one on already existing data.
-
-    // you can use this in your logic/classes folder. only using getData('/', 'something', {});
-    // This is just a demo.
-    fire.postData('/', 'users/hello', {
-        "Jeppan": {
-            leader: "YEPP",
-            cool: "YEPP"
-        }
-    });
-    fire.updateData('/', 'users', {
-        "Jeppan": {
-            leader: "WTF?",
-            cool: "KIND OF"
-        }
-    });
-
-    fire.updateData('/', 'users', {
-        "Robban": {
-            leader: "Hell YEAH",
-            cool: "TOTALLY"
-        }
-    });
-
-    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
-        console.log(userCredentials);
-        console.log("Hello");
-    });
+document.getElementById('reply').addEventListener('click', function () {
+    var chat = new _chat2.default();
+    chat.sendMessage('general', "Hello MADDAFAKKA", "Jeppan");
 });
 
 /***/ }
