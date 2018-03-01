@@ -40,5 +40,4 @@ testDiv.addEventListener('click', () => {
     fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', (userCredentials) => {
         console.log(userCredentials);
     });
-
 });
