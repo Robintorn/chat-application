@@ -14442,21 +14442,16 @@ var Chat = function (_FirebaseRepository) {
         }
     }, {
         key: 'render',
-        value: function render(room, renderId) {
-            console.log(room);
-            var index = 0;
-            this.getData('/messages/room/' + room, 'value', function (response) {
-                console.log(response);
-                if (index === 0) {
-                    Object.keys(response).map(function (item) {
-                        document.getElementById(renderId).innerHTML += '\n                        <div>\n                            <h3>' + item[0] + ' | ' + item[1] + '</h3>\n                            <p>' + item[2] + '</p>\n                        </div>\n                    ';
-                        index++;
-                    });
-                } else {
-                    document.getElementById(renderId).innerHTML += '\n                    <div>\n                        <h3>' + response[index][0] + ' | ' + response[index][1] + '</h3>\n                        <p>' + response[index][2] + '</p>\n                    </div>\n                ';
-                    index++;
-                }
+        value: function render(room, func) {
+            this.getData('/messages/room/' + room, 'child_added', function (response) {
+                func('\n                <div>\n                    <h3>' + response["displayName"] + '</h3>\n                    <p>' + response["message"] + '</p>\n                </div>\n            ');
+                //Chat.apply(renderId, rendered);
             });
+        }
+    }], [{
+        key: 'apply',
+        value: function apply(renderId, html) {
+            document.getElementById(renderId).innerHTML += html;
         }
     }]);
 
@@ -29802,6 +29797,8 @@ var _class = function () {
 
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
+                    document.cookie = "displayName=" + user.displayName + ";" + "email=" + user.email + ";" + "img_url=" + user.photoURL + ";" + "uid=" + user.uid + ";";
+
                     func({
                         "displayName": user.displayName,
                         "email": user.email,
@@ -29845,13 +29842,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 document.addEventListener('DOMContentLoaded', function () {
     var chat = new _chat2.default();
-    console.log("Im here");
-    chat.render('general', 'chat-window');
+    chat.render('general', function (rendered) {
+        document.getElementById('chat-window').innerHTML += rendered;
+    });
 });
 
-document.getElementById('reply').addEventListener('click', function () {
-    var chat = new _chat2.default();
-    chat.sendMessage('general', "Hello MADDAFAKKA", "Jeppan");
+document.getElementById('send').addEventListener('click', function () {
+
+    var message = document.getElementById('message').value;
+
+    if (message.length > 1) {
+        var chat = new _chat2.default();
+        chat.sendMessage('general', message, "Jeppan");
+    }
 });
 
 /***/ }

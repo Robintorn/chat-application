@@ -13,30 +13,14 @@ class Chat extends FirebaseRepository {
         });
     }
 
-    render(room, renderId) {
-        console.log(room);
-        let index = 0;
-        this.getData('/messages/room/' + room, 'value', (response) => {
-            console.log(response);
-            if(index === 0) {
-                Object.keys(response).map((item) => {
-                    document.getElementById(renderId).innerHTML += `
-                        <div>
-                            <h3>${item[0]} | ${item[1]}</h3>
-                            <p>${item[2]}</p>
-                        </div>
-                    `;
-                    index++;
-                });
-            } else {
-                document.getElementById(renderId).innerHTML += `
-                    <div>
-                        <h3>${response[index][0]} | ${response[index][1]}</h3>
-                        <p>${response[index][2]}</p>
-                    </div>
-                `;
-                index++;
-            }
+    render(room, func) {
+        this.getData('/messages/room/' + room, 'child_added', (response) => {
+            func(`
+                <div>
+                    <h3>${response["displayName"]}</h3>
+                    <p>${response["message"]}</p>
+                </div>
+            `);
         });
     }
 }

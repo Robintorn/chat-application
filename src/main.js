@@ -2,11 +2,17 @@ import Chat from './logic/chat';
 
 document.addEventListener('DOMContentLoaded', () => {
     let chat = new Chat();
-    console.log("Im here");
-    chat.render('general', 'chat-window');
+    chat.render('general', (rendered) => {
+        document.getElementById('chat-window').innerHTML += rendered;
+    });
 });
 
-document.getElementById('reply').addEventListener('click', () => {
-    let chat = new Chat();
-    chat.sendMessage('general', "Hello MADDAFAKKA", "Jeppan");
+document.getElementById('send').addEventListener('click', () => {
+
+    let message = document.getElementById('message').value;
+
+    if(message.length > 1) {
+        let chat = new Chat();
+        chat.sendMessage('general', message, "Jeppan");
+    }
 });
