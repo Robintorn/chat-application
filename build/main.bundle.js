@@ -5177,7 +5177,7 @@ var _class = function () {
                         });
                     }
                 } else {
-                    var reg = document.getElementById("registration/login").style.display = "block";
+                    var _regLog = document.getElementById("registration/login").style.display = "block";
                     var _welcome = document.getElementById("welcome").style.display = "none";
                     var _logout = document.getElementById("logout").style.display = "none";
                 }
