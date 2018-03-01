@@ -14444,14 +14444,9 @@ var Chat = function (_FirebaseRepository) {
         key: 'render',
         value: function render(room, func) {
             this.getData('/messages/room/' + room, 'child_added', function (response) {
+                console.log(response);
                 func('\n                <div>\n                    <h3>' + response["displayName"] + '</h3>\n                    <p>' + response["message"] + '</p>\n                </div>\n            ');
-                //Chat.apply(renderId, rendered);
             });
-        }
-    }], [{
-        key: 'apply',
-        value: function apply(renderId, html) {
-            document.getElementById(renderId).innerHTML += html;
         }
     }]);
 
@@ -29799,12 +29794,14 @@ var _class = function () {
                 if (user) {
                     document.cookie = "displayName=" + user.displayName + ";" + "email=" + user.email + ";" + "img_url=" + user.photoURL + ";" + "uid=" + user.uid + ";";
 
-                    func({
-                        "displayName": user.displayName,
-                        "email": user.email,
-                        "img_url": user.photoURL,
-                        "uid": user.uid
-                    });
+                    if (func !== null) {
+                        func({
+                            "displayName": user.displayName,
+                            "email": user.email,
+                            "img_url": user.photoURL,
+                            "uid": user.uid
+                        });
+                    }
                 }
             });
         }
@@ -29840,21 +29837,36 @@ var _chat2 = _interopRequireDefault(_chat);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var chatNav = document.getElementById('chat-navigation');
+var replyBox = document.getElementById('reply');
+
 document.addEventListener('DOMContentLoaded', function () {
     var chat = new _chat2.default();
-    chat.render('general', function (rendered) {
-        document.getElementById('chat-window').innerHTML += rendered;
+    var currentChat = "";
+
+    chat.getData("/messages/room", 'value', function (response) {
+        Object.keys(response).map(function (item) {
+            chatNav.innerHTML += '\n                <h3 data-value="' + item + '">' + item + '</h3>\n            ';
+        });
     });
 });
 
-document.getElementById('send').addEventListener('click', function () {
+chatNav.addEventListener('click', function (e) {
+    // remove target and change to id
+    replyBox.style.display = "block";
+    var currentChat = e.target.getAttribute("data-value");
 
-    var message = document.getElementById('message').value;
+    var chat = new _chat2.default();
+    chat.render(currentChat, function (rendered) {
+        document.getElementById('chat-window').innerHTML += rendered;
+    });
 
-    if (message.length > 1) {
-        var chat = new _chat2.default();
-        chat.sendMessage('general', message, "Jeppan");
-    }
+    document.getElementById('send').addEventListener('click', function () {
+        var message = document.getElementById('message').value;
+        if (message.length > 1) {
+            chat.sendMessage(currentChat, message, "Jeppan");
+        }
+    });
 });
 
 /***/ }
