@@ -99,12 +99,14 @@ export default class {
 
         firebase.auth().onAuthStateChanged((user) => {
             if(user) {
-                func({
-                    "displayName": user.displayName,
-                    "email": user.email,
-                    "img_url": user.photoURL,
-                    "uid": user.uid
-                });
+                if(func !== null) {
+                    func({
+                        "displayName": user.displayName,
+                        "email": user.email,
+                        "img_url": user.photoURL,
+                        "uid": user.uid
+                    });
+                }
             }
         });
     }
