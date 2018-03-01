@@ -5167,7 +5167,7 @@ var _class = function () {
                     var welcome = document.getElementById("welcome").style.display = "block";
                     var logout = document.getElementById("logout").style.display = "block";
                     var regLog = document.getElementById("registration/login").style.display = "none";
-                    console.log(email + "Logged in");
+                    console.log(email + " Logged in");
                     if (func !== null) {
                         func({
                             "displayName": user.displayName,
@@ -5180,7 +5180,6 @@ var _class = function () {
                     var reg = document.getElementById("registration/login").style.display = "block";
                     var _welcome = document.getElementById("welcome").style.display = "none";
                     var _logout = document.getElementById("logout").style.display = "none";
-                    console.log("Logged out");
                 }
             });
         }
@@ -14611,6 +14610,7 @@ var Login = function (_FirebaseRepository) {
         key: "logout",
         value: function logout() {
             this.auth("signOut");
+            console.log("Logged out");
         }
     }, {
         key: "render",

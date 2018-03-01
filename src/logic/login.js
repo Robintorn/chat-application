@@ -11,6 +11,7 @@ class Login extends FirebaseRepository {
 
     logout(){
         this.auth("signOut");
+        console.log("Logged out");
     }
 
     render() {
