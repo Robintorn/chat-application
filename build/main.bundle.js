@@ -14443,6 +14443,7 @@ var Chat = function (_FirebaseRepository) {
     }, {
         key: 'render',
         value: function render(room, func) {
+            console.log(room);
             this.getData('/messages/room/' + room, 'child_added', function (response) {
                 console.log(response);
                 func('\n                <div>\n                    <h3>' + response["displayName"] + '</h3>\n                    <p>' + response["message"] + '</p>\n                </div>\n            ');
@@ -29840,34 +29841,52 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var chatNav = document.getElementById('chat-navigation');
 var replyBox = document.getElementById('reply');
 
-document.addEventListener('DOMContentLoaded', function () {
+var chatRoomUserIsIn = {};
+
+function init() {
     var chat = new _chat2.default();
-    var currentChat = "";
 
     chat.getData("/messages/room", 'value', function (response) {
+        var rendered = "";
+
         Object.keys(response).map(function (item) {
-            chatNav.innerHTML += '\n                <h3 data-value="' + item + '">' + item + '</h3>\n            ';
+            rendered += '\n                <h3 data-value="' + item + '">' + item + '</h3>\n            ';
         });
+        chatNav.innerHTML = rendered;
+        rendered = "";
     });
-});
 
-chatNav.addEventListener('click', function (e) {
-    // remove target and change to id
-    replyBox.style.display = "block";
-    var currentChat = e.target.getAttribute("data-value");
+    chatNav.addEventListener('click', function (e) {
+        document.getElementById('chat-window').innerHTML = "";
+        // remove target and change to id
+        replyBox.style.display = "block";
 
-    var chat = new _chat2.default();
-    chat.render(currentChat, function (rendered) {
+        chatRoomUserIsIn = {
+            current: e.target.getAttribute("data-value")
+        };
+        document.getElementById('send').removeEventListener('click', sendBtn);
+        openChat(chat);
+    });
+}
+
+function openChat(chat) {
+
+    chat.render(chatRoomUserIsIn["current"], function (rendered) {
         document.getElementById('chat-window').innerHTML += rendered;
     });
 
-    document.getElementById('send').addEventListener('click', function () {
-        var message = document.getElementById('message').value;
-        if (message.length > 1) {
-            chat.sendMessage(currentChat, message, "Jeppan");
-        }
-    });
-});
+    document.getElementById('send').addEventListener('click', sendBtn);
+}
+
+function sendBtn() {
+    var chat = new _chat2.default();
+    var message = document.getElementById('message').value;
+    if (message.length > 1) {
+        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jeppan");
+    }
+}
+
+init();
 
 /***/ }
 /******/ ]);

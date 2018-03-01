@@ -14,6 +14,7 @@ class Chat extends FirebaseRepository {
     }
 
     render(room, func) {
+        console.log(room);
         this.getData('/messages/room/' + room, 'child_added', (response) => {
             console.log(response);
             func(`
