@@ -98,8 +98,9 @@ export default class {
             }
 
             case "signOut": {
-                firebase.auth().signOut();
-                break;
+                firebase.auth().signOut().catch((err) => {
+                    console.error(err);
+                });
             }
 
         }
@@ -114,8 +115,6 @@ export default class {
                         "uid": user.uid
                     });
                 }
-            } else {
-                return false;
             }
         });
     }

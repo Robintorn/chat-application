@@ -5156,8 +5156,9 @@ var _class = function () {
 
                 case "signOut":
                     {
-                        firebase.auth().signOut();
-                        break;
+                        firebase.auth().signOut().catch(function (err) {
+                            console.error(err);
+                        });
                     }
 
             }
@@ -14596,12 +14597,25 @@ var Login = function (_FirebaseRepository) {
     _createClass(Login, [{
         key: "login",
         value: function login(email, password) {
-            this.auth("signInUserWithEmailPass", email, password, null);
+            this.auth("signInUserWithEmailPass", email, password, function (user) {
+                if (user) {
+                    var welcome = document.getElementById("welcome").style.display = "block";
+                    document.getElementById("welcome").innerHTML = "Welcome " + email;
+                    var logout = document.getElementById("logout").style.display = "block";
+                    var regLog = document.getElementById("registration/login").style.display = "none";
+                }
+            });
         }
     }, {
         key: "logout",
         value: function logout() {
-            this.auth("signOut");
+            this.auth("signOut", null, null, function (user) {
+                if (!user) {
+                    var regLog = document.getElementById("registration/login").style.display = "block";
+                    var welcome = document.getElementById("welcome").style.display = "none";
+                    var logout = document.getElementById("logout").style.display = "none";
+                }
+            });
             console.log("Logged out");
         }
     }, {

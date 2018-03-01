@@ -6,11 +6,24 @@ class Login extends FirebaseRepository {
     }
 
     login(email, password){
-        this.auth("signInUserWithEmailPass", email, password, null);
+        this.auth("signInUserWithEmailPass", email, password, (user) => {
+            if(user){
+                let welcome = document.getElementById("welcome").style.display = "block";
+                document.getElementById("welcome").innerHTML =  "Welcome " + email;
+                let logout = document.getElementById("logout").style.display = "block"; 
+                let regLog = document.getElementById("registration/login").style.display = "none";
+            }
+        });
     }
 
     logout(){
-        this.auth("signOut");
+        this.auth("signOut", null, null,(user) => {
+            if(!user){
+                let regLog = document.getElementById("registration/login").style.display = "block";
+                let welcome = document.getElementById("welcome").style.display = "none";
+                let logout = document.getElementById("logout").style.display = "none";
+            }
+        })
         console.log("Logged out");
     }
 
