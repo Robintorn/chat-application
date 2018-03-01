@@ -106,6 +106,10 @@ export default class {
 
         firebase.auth().onAuthStateChanged((user) => {
             if(user) {
+                let welcome = document.getElementById("welcome").style.display = "block";
+                let logout = document.getElementById("logout").style.display = "block"; 
+                let regLog = document.getElementById("registration/login").style.display = "none";
+                console.log("Logged in");
                 if(func !== null) {
                     func({
                         "displayName": user.displayName,
@@ -114,6 +118,11 @@ export default class {
                         "uid": user.uid
                     });
                 }
+            }
+            else{
+                let reg = document.getElementById("registration/login").style.display = "block";
+                let logout = document.getElementById("logout").style.display = "none";  
+                console.log("Logged out");
             }
         });
     }

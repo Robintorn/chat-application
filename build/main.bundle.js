@@ -5164,12 +5164,22 @@ var _class = function () {
 
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
-                    func({
-                        "displayName": user.displayName,
-                        "email": user.email,
-                        "img_url": user.photoURL,
-                        "uid": user.uid
-                    });
+                    var welcome = document.getElementById("welcome").style.display = "block";
+                    var logout = document.getElementById("logout").style.display = "block";
+                    var regLog = document.getElementById("registration/login").style.display = "none";
+                    console.log("Logged in");
+                    if (func !== null) {
+                        func({
+                            "displayName": user.displayName,
+                            "email": user.email,
+                            "img_url": user.photoURL,
+                            "uid": user.uid
+                        });
+                    }
+                } else {
+                    var reg = document.getElementById("registration/login").style.display = "block";
+                    var _logout = document.getElementById("logout").style.display = "none";
+                    console.log("Logged out");
                 }
             });
         }
@@ -14594,7 +14604,12 @@ var Login = function (_FirebaseRepository) {
     _createClass(Login, [{
         key: "login",
         value: function login(email, password) {
-            this.auth("signInUserWithEmailPass", email, password);
+            this.auth("signInUserWithEmailPass", email, password, null);
+        }
+    }, {
+        key: "logout",
+        value: function logout() {
+            this.auth("signOut");
         }
     }, {
         key: "render",
@@ -14645,7 +14660,7 @@ var Register = function (_FirebaseRepository) {
     _createClass(Register, [{
         key: "register",
         value: function register(email, password) {
-            this.auth("createUserWithEmailPass", email, password);
+            this.auth("createUserWithEmailPass", email, password, null);
         }
     }, {
         key: "render",
@@ -29882,12 +29897,9 @@ var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var testDiv = document.getElementById('test');
-testDiv.style.backgroundColor = "red";
-testDiv.innerText = "CLICK ME";
-
 var login = document.getElementById("login");
 var signup = document.getElementById("signup");
+var logout = document.getElementById("logout");
 
 login.addEventListener("click", function () {
     var email = document.getElementById("email");
@@ -29896,18 +29908,16 @@ login.addEventListener("click", function () {
     login.login(email.value, password.value);
 });
 
-<<<<<<< HEAD
 signup.addEventListener("click", function () {
     var email = document.getElementById("email");
     var password = document.getElementById("password");
     var register = new _register2.default();
     register.register(email.value, password.value);
-=======
-    fire.auth('signInUserWithEmailPass', 'jeppa12321n@gmail.com', 'he3333llowoooooord', function (userCredentials) {
-        console.log(userCredentials);
-        console.log("Hello");
-    });
->>>>>>> master
+});
+
+logout.addEventListener("click", function () {
+    var logout = new _login2.default();
+    logout.logout();
 });
 
 /***/ }

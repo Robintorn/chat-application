@@ -6,7 +6,11 @@ class Login extends FirebaseRepository {
     }
 
     login(email, password){
-        this.auth("signInUserWithEmailPass", email, password);
+        this.auth("signInUserWithEmailPass", email, password, null);
+    }
+
+    logout(){
+        this.auth("signOut");
     }
 
     render() {

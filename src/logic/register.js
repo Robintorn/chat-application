@@ -6,7 +6,7 @@ class Register extends FirebaseRepository {
     }
 
     register(email, password){
-        this.auth("createUserWithEmailPass", email, password);
+        this.auth("createUserWithEmailPass", email, password, null);
     }
 
     render() {
