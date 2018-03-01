@@ -122,7 +122,7 @@ export default class {
             else{
                 let reg = document.getElementById("registration/login").style.display = "block";
                 let welcome = document.getElementById("welcome").style.display = "none";
-                let logout = document.getElementById("logout").style.display = "none";  
+                let logout = document.getElementById("logout").style.display = "none";
             }
         });
     }

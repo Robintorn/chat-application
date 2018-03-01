@@ -14,6 +14,10 @@ class Login extends FirebaseRepository {
         console.log("Logged out");
     }
 
+    logingithub(){
+        this.auth("signInWithGithub")
+    }
+
     render() {
         return `
             <h1>This is the login!</h1>

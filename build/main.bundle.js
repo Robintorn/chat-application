@@ -14613,6 +14613,11 @@ var Login = function (_FirebaseRepository) {
             console.log("Logged out");
         }
     }, {
+        key: "logingithub",
+        value: function logingithub() {
+            this.auth("signInWithGithub");
+        }
+    }, {
         key: "render",
         value: function render() {
             return "\n            <h1>This is the login!</h1>\n        ";
@@ -29899,6 +29904,7 @@ var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var login = document.getElementById("login");
+var loggit = document.getElementById("github-login");
 var signup = document.getElementById("signup");
 var logout = document.getElementById("logout");
 
@@ -29907,6 +29913,11 @@ login.addEventListener("click", function () {
     var password = document.getElementById("password");
     var login = new _login2.default();
     login.login(email.value, password.value);
+});
+
+loggit.addEventListener("click", function () {
+    var loggit = new _login2.default();
+    loggit.logingithub();
 });
 
 signup.addEventListener("click", function () {
