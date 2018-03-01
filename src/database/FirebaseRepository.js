@@ -94,7 +94,14 @@ export default class {
                 }).catch((err) => {
                     console.error(err);
                 });
+                break;
             }
+
+            case "signOut": {
+                firebase.auth().signOut();
+                break;
+            }
+
         }
 
         firebase.auth().onAuthStateChanged((user) => {
