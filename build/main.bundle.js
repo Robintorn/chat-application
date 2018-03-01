@@ -5165,9 +5165,9 @@ var _class = function () {
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
                     var welcome = document.getElementById("welcome").style.display = "block";
+                    document.getElementById("welcome").innerHTML = "Welcome " + email;
                     var logout = document.getElementById("logout").style.display = "block";
                     var regLog = document.getElementById("registration/login").style.display = "none";
-                    console.log(email + " Logged in");
                     if (func !== null) {
                         func({
                             "displayName": user.displayName,

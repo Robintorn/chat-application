@@ -107,9 +107,9 @@ export default class {
         firebase.auth().onAuthStateChanged((user) => {
             if(user) {
                 let welcome = document.getElementById("welcome").style.display = "block";
+                document.getElementById("welcome").innerHTML =  "Welcome " + email;
                 let logout = document.getElementById("logout").style.display = "block"; 
                 let regLog = document.getElementById("registration/login").style.display = "none";
-                console.log(email + " Logged in");
                 if(func !== null) {
                     func({
                         "displayName": user.displayName,
