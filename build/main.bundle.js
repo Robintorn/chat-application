@@ -5164,10 +5164,6 @@ var _class = function () {
 
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
-                    var welcome = document.getElementById("welcome").style.display = "block";
-                    document.getElementById("welcome").innerHTML = "Welcome " + email;
-                    var logout = document.getElementById("logout").style.display = "block";
-                    var regLog = document.getElementById("registration/login").style.display = "none";
                     if (func !== null) {
                         func({
                             "displayName": user.displayName,
@@ -5176,10 +5172,6 @@ var _class = function () {
                             "uid": user.uid
                         });
                     }
-                } else {
-                    var _regLog = document.getElementById("registration/login").style.display = "block";
-                    var _welcome = document.getElementById("welcome").style.display = "none";
-                    var _logout = document.getElementById("logout").style.display = "none";
                 }
             });
         }
@@ -14666,7 +14658,14 @@ var Register = function (_FirebaseRepository) {
     _createClass(Register, [{
         key: "register",
         value: function register(email, password) {
-            this.auth("createUserWithEmailPass", email, password, null);
+            this.auth("createUserWithEmailPass", email, password, function (user) {
+                if (user) {
+                    var welcome = document.getElementById("welcome").style.display = "block";
+                    document.getElementById("welcome").innerHTML = "Welcome " + email;
+                    var logout = document.getElementById("logout").style.display = "block";
+                    var regLog = document.getElementById("registration/login").style.display = "none";
+                }
+            });
         }
     }, {
         key: "render",
