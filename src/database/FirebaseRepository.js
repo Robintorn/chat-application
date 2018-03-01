@@ -109,7 +109,7 @@ export default class {
                 let welcome = document.getElementById("welcome").style.display = "block";
                 let logout = document.getElementById("logout").style.display = "block"; 
                 let regLog = document.getElementById("registration/login").style.display = "none";
-                console.log("Logged in");
+                console.log(email + " Logged in");
                 if(func !== null) {
                     func({
                         "displayName": user.displayName,
