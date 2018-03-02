@@ -78,6 +78,7 @@ export default class {
             case "signInUserWithEmailPass": {
                 firebase.auth().signInWithEmailAndPassword(email, password).catch((err) => {
                    console.error(err);
+                   document.getElementById("message").innerHTML = (err);
                 });
                 break;
             }

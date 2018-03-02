@@ -5134,6 +5134,7 @@ var _class = function () {
                     {
                         firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
+                            document.getElementById("message").innerHTML = err;
                         });
                         break;
                     }
