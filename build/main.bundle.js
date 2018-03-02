@@ -14677,7 +14677,7 @@ var Register = function (_FirebaseRepository) {
                     var welcome = document.getElementById("welcome").style.display = "block";
                     document.getElementById("welcome").innerHTML = "Welcome " + email;
                     var logout = document.getElementById("logout").style.display = "block";
-                    var regLog = document.getElementById("registration/login").style.display = "none";
+                    var regLog = document.getElementById("register").style.display = "none";
                 }
             });
         }
@@ -29934,8 +29934,8 @@ loggit.addEventListener("click", function () {
 });
 
 signup.addEventListener("click", function () {
-    var email = document.getElementById("email");
-    var password = document.getElementById("password");
+    var email = document.getElementById("registeremail");
+    var password = document.getElementById("registerpassword");
     var register = new _register2.default();
     register.register(email.value, password.value);
 });
@@ -29943,6 +29943,15 @@ signup.addEventListener("click", function () {
 logout.addEventListener("click", function () {
     var logout = new _login2.default();
     logout.logout();
+});
+
+/* Angående tillgång till registrering */
+
+var sign = document.getElementById("sign");
+
+sign.addEventListener("click", function () {
+    document.getElementById("register").style.display = "block";
+    document.getElementById("registration/login").style.display = "none";
 });
 
 /***/ }

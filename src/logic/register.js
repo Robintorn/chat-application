@@ -11,7 +11,7 @@ class Register extends FirebaseRepository {
                 let welcome = document.getElementById("welcome").style.display = "block";
                 document.getElementById("welcome").innerHTML =  "Welcome " + email;
                 let logout = document.getElementById("logout").style.display = "block"; 
-                let regLog = document.getElementById("registration/login").style.display = "none";
+                let regLog = document.getElementById("register").style.display = "none";
             }
         });
     }

@@ -15,7 +15,7 @@ class Login extends FirebaseRepository {
             }
         });
     }
-
+    
     logout(){
         this.auth("signOut", null, null,(user) => {
             if(!user){

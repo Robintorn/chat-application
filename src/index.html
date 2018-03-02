@@ -6,15 +6,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div id="welcome" style="display: none; color: white; text-align: center;">
+<div id="welcome">
 </div>
 <div id="registration/login" class="login">
     <h1>Login</h1>
     <input id="email" type="email" placeholder="Email">
     <input id="password" type="password" placeholder="Password">
     <button id="login" class="btn btn-primary btn-block btn-large">Log-in</button>
-    <button id="signup" class="btn btn-block btn-large">Sign-up</button>
+    <button id="sign" class="btn btn-block btn-large">Sign-up</button>
     <button id="github-login" class="btn btn-primary btn-block btn-large">Log-in with Github</button>
+</div>
+<div id="register" class="login" style="display: none">
+    <h1>Register</h1>
+    <input id="registeremail" type="email" placeholder="Email">
+    <input id="registerpassword"type="password" placeholder="Password">
+    <button id="signup" class="btn btn-primary btn-block btn-large">Sign-up</button>
 </div>
     <button id="logout" style="display: none;">Logout</button>
 <script src="../build/main.bundle.js"></script>

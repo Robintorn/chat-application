@@ -20,8 +20,8 @@ loggit.addEventListener("click", () => {
 })
 
 signup.addEventListener("click", () => {
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
+    let email = document.getElementById("registeremail");
+    let password = document.getElementById("registerpassword");
     let register = new Register()
     register.register(email.value, password.value);
 });
@@ -29,4 +29,13 @@ signup.addEventListener("click", () => {
 logout.addEventListener("click", () => {
     let logout = new Login();
     logout.logout();
+})
+
+/* Angående tillgång till registrering */
+
+let sign = document.getElementById("sign");
+
+sign.addEventListener("click", function(){
+    document.getElementById("register").style.display = "block";
+    document.getElementById("registration/login").style.display = "none";
 })
