@@ -71,7 +71,6 @@ export default class {
             case "createUserWithEmailPass": {
                 firebase.auth().createUserWithEmailAndPassword(email, password).catch((err) => {
                     console.error(err);
-                    func(err);
                 });
                 break;
             }
@@ -79,7 +78,6 @@ export default class {
             case "signInUserWithEmailPass": {
                 firebase.auth().signInWithEmailAndPassword(email, password).catch((err) => {
                    console.error(err);
-                   func(err);
                 });
                 break;
             }
@@ -108,6 +106,7 @@ export default class {
         }
 
         firebase.auth().onAuthStateChanged((user) => {
+            console.log(user);
             if(user) {
                 if(func !== null) {
                     func({
