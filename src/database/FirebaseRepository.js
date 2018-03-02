@@ -71,6 +71,7 @@ export default class {
             case "createUserWithEmailPass": {
                 firebase.auth().createUserWithEmailAndPassword(email, password).catch((err) => {
                     console.error(err);
+                    document.getElementById("registermessage").innerHTML = (err);
                 });
                 break;
             }

@@ -5126,6 +5126,7 @@ var _class = function () {
                     {
                         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
+                            document.getElementById("registermessage").innerHTML = err;
                         });
                         break;
                     }
