@@ -14611,13 +14611,11 @@ var Login = function (_FirebaseRepository) {
     }, {
         key: "logout",
         value: function logout() {
-            this.auth("signOut", null, null, function (user) {
-                if (!user) {
-                    var regLog = document.getElementById("registration/login").style.display = "block";
-                    var welcome = document.getElementById("welcome").style.display = "none";
-                    var logout = document.getElementById("logout").style.display = "none";
-                }
-            });
+            this.auth("signOut", null, null);
+
+            var regLog = document.getElementById("registration/login").style.display = "block";
+            var welcome = document.getElementById("welcome").style.display = "none";
+            var logout = document.getElementById("logout").style.display = "none";
             console.log("Logged out");
         }
     }, {
@@ -29938,6 +29936,7 @@ loggit.addEventListener("click", function () {
 signup.addEventListener("click", function () {
     var email = document.getElementById("registeremail");
     var password = document.getElementById("registerpassword");
+    var password2 = document.getElementById("registerpassword2");
     var register = new _register2.default();
     register.register(email.value, password.value);
 });

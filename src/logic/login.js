@@ -17,13 +17,10 @@ class Login extends FirebaseRepository {
     }
     
     logout(){
-        this.auth("signOut", null, null,(user) => {
-            if(!user){
-                let regLog = document.getElementById("registration/login").style.display = "block";
-                let welcome = document.getElementById("welcome").style.display = "none";
-                let logout = document.getElementById("logout").style.display = "none";
-            }
-        })
+        this.auth("signOut", null, null, null)
+        let regLog = document.getElementById("registration/login").style.display = "block";
+        let welcome = document.getElementById("welcome").style.display = "none";
+        let logout = document.getElementById("logout").style.display = "none";
         console.log("Logged out");
     }
 

@@ -22,6 +22,7 @@ loggit.addEventListener("click", () => {
 signup.addEventListener("click", () => {
     let email = document.getElementById("registeremail");
     let password = document.getElementById("registerpassword");
+    let password2 = document.getElementById("registerpassword2");
     let register = new Register()
     register.register(email.value, password.value);
 });
