@@ -6,8 +6,8 @@ class Register extends FirebaseRepository {
     }
 
     register(email, password){
-        this.auth("createUserWithEmailPass", email, password, (err) => {
-            if(err){
+        this.auth("createUserWithEmailPass", email, password, (user) => {
+            if(!user){
                 let message = document.getElementById("registermessage");
                 message.style.display = "block";
                 message.innerHTML = err.message;
