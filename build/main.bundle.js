@@ -5126,7 +5126,12 @@ var _class = function () {
                     {
                         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            document.getElementById("registermessage").innerHTML = err;
+                            var message = document.getElementById("registermessage");
+                            message.style.display = "block";
+                            message.innerHTML = err;
+                            setTimeout(function () {
+                                message.style.display = "none";
+                            }, 3000);
                         });
                         break;
                     }
@@ -5135,7 +5140,12 @@ var _class = function () {
                     {
                         firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            document.getElementById("message").innerHTML = err;
+                            var message = document.getElementById("message");
+                            message.style.display = "block";
+                            message.innerHTML = err;
+                            setTimeout(function () {
+                                message.style.display = "none";
+                            }, 3000);
                         });
                         break;
                     }
@@ -14611,8 +14621,7 @@ var Login = function (_FirebaseRepository) {
     }, {
         key: "logout",
         value: function logout() {
-            this.auth("signOut", null, null);
-
+            this.auth("signOut", null, null, null);
             var regLog = document.getElementById("registration/login").style.display = "block";
             var welcome = document.getElementById("welcome").style.display = "none";
             var logout = document.getElementById("logout").style.display = "none";
