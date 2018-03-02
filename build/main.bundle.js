@@ -5126,12 +5126,7 @@ var _class = function () {
                     {
                         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            var message = document.getElementById("registermessage");
-                            message.style.display = "block";
-                            message.innerHTML = err;
-                            setTimeout(function () {
-                                message.style.display = "none";
-                            }, 3000);
+                            func(err);
                         });
                         break;
                     }
@@ -5140,12 +5135,7 @@ var _class = function () {
                     {
                         firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            var message = document.getElementById("message");
-                            message.style.display = "block";
-                            message.innerHTML = err;
-                            setTimeout(function () {
-                                message.style.display = "none";
-                            }, 3000);
+                            func(err);
                         });
                         break;
                     }
@@ -14610,11 +14600,16 @@ var Login = function (_FirebaseRepository) {
         key: "login",
         value: function login(email, password) {
             this.auth("signInUserWithEmailPass", email, password, function (user) {
-                if (user) {
+                if (err) {
                     var welcome = document.getElementById("welcome").style.display = "block";
                     document.getElementById("welcome").innerHTML = "Welcome " + email;
                     var logout = document.getElementById("logout").style.display = "block";
                     var regLog = document.getElementById("registration/login").style.display = "none";
+                } else {
+                    var _welcome = document.getElementById("welcome").style.display = "block";
+                    document.getElementById("welcome").innerHTML = "Welcome " + email;
+                    var _logout = document.getElementById("logout").style.display = "block";
+                    var _regLog = document.getElementById("registration/login").style.display = "none";
                 }
             });
         }
@@ -14681,8 +14676,15 @@ var Register = function (_FirebaseRepository) {
     _createClass(Register, [{
         key: "register",
         value: function register(email, password) {
-            this.auth("createUserWithEmailPass", email, password, function (user) {
-                if (user) {
+            this.auth("createUserWithEmailPass", email, password, function (err) {
+                if (err) {
+                    var message = document.getElementById("registermessage");
+                    message.style.display = "block";
+                    message.innerHTML = err;
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 3000);
+                } else {
                     var welcome = document.getElementById("welcome").style.display = "block";
                     document.getElementById("welcome").innerHTML = "Welcome " + email;
                     var logout = document.getElementById("logout").style.display = "block";
