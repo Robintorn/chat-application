@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="nav">
+    <div id="nav" style="display: none;">
     <div class="agilt">
     <a href="./views/chat.html">Chattrum</a>
     </div>
@@ -20,7 +20,13 @@
     </ul>
 </nav>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function(){document.getElementById("animation").style.display = "none"}, 3000);
+  });
 
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function(){document.getElementById("nav").style.display = "block"}, 3000);
+  });
 </script>
 <script src="../build/main.bundle.js"></script>
 </body>
