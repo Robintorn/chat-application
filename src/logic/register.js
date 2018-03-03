@@ -7,19 +7,19 @@ class Register extends FirebaseRepository {
 
     register(email, password){
         this.auth("createUserWithEmailPass", email, password, (user) => {
-            if(user){
-                let welcome = document.getElementById("welcome").style.display = "block";
+            if(!user){
+                let message = document.getElementById("registermessage");
+                message.style.display = "block";
+                message.innerHTML = err.message;
+                setTimeout(function(){message.style.display = "none"}, 3000);
+            }
+            else{
+                document.getElementById("welcome").style.display = "block";
                 document.getElementById("welcome").innerHTML =  "Welcome " + email;
-                let logout = document.getElementById("logout").style.display = "block"; 
-                let regLog = document.getElementById("register").style.display = "none";
+                document.getElementById("logout").style.display = "block";
+                document.getElementById("register").style.display = "none";
             }
         });
-    }
-
-    render() {
-        return `
-            <h1>This is the register!</h1>
-        `;
     }
 }
 

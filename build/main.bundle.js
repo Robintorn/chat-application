@@ -3300,7 +3300,6 @@ var _class = function () {
                     {
                         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            document.getElementById("registermessage").innerHTML = err;
                         });
                         break;
                     }
@@ -3309,7 +3308,6 @@ var _class = function () {
                     {
                         firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
-                            document.getElementById("message").innerHTML = err;
                         });
                         break;
                     }
@@ -14672,35 +14670,37 @@ var Login = function (_FirebaseRepository) {
         key: "login",
         value: function login(email, password) {
             this.auth("signInUserWithEmailPass", email, password, function (user) {
-                if (user) {
-                    var welcome = document.getElementById("welcome").style.display = "block";
+                console.log("DEBUG", user);
+                if (!user) {
+                    console.log("Im here");
+                    var message = document.getElementById("registermessage");
+                    message.style.display = "block";
+                    message.innerHTML = err.message;
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 3000);
+                } else {
+                    console.log("Im here 2");
+                    document.getElementById("welcome").style.display = "block";
                     document.getElementById("welcome").innerHTML = "Welcome " + email;
-                    var logout = document.getElementById("logout").style.display = "block";
-                    var regLog = document.getElementById("registration/login").style.display = "none";
+                    document.getElementById("logout").style.display = "block";
+                    document.getElementById("registration/login").style.display = "none";
                 }
             });
         }
     }, {
         key: "logout",
         value: function logout() {
-            this.auth("signOut", null, null, function (user) {
-                if (!user) {
-                    var regLog = document.getElementById("registration/login").style.display = "block";
-                    var welcome = document.getElementById("welcome").style.display = "none";
-                    var logout = document.getElementById("logout").style.display = "none";
-                }
-            });
+            this.auth("signOut", null, null, null);
+            document.getElementById("registration/login").style.display = "block";
+            document.getElementById("welcome").style.display = "none";
+            document.getElementById("logout").style.display = "none";
             console.log("Logged out");
         }
     }, {
         key: "logingithub",
         value: function logingithub() {
-            this.auth("signInWithGithub");
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return "\n            <h1>This is the login!</h1>\n        ";
+            this.auth("signInWithGithub", null, null, null);
         }
     }]);
 
@@ -14747,18 +14747,20 @@ var Register = function (_FirebaseRepository) {
         key: "register",
         value: function register(email, password) {
             this.auth("createUserWithEmailPass", email, password, function (user) {
-                if (user) {
-                    var welcome = document.getElementById("welcome").style.display = "block";
+                if (!user) {
+                    var message = document.getElementById("registermessage");
+                    message.style.display = "block";
+                    message.innerHTML = err.message;
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 3000);
+                } else {
+                    document.getElementById("welcome").style.display = "block";
                     document.getElementById("welcome").innerHTML = "Welcome " + email;
-                    var logout = document.getElementById("logout").style.display = "block";
-                    var regLog = document.getElementById("register").style.display = "none";
+                    document.getElementById("logout").style.display = "block";
+                    document.getElementById("register").style.display = "none";
                 }
             });
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return "\n            <h1>This is the register!</h1>\n        ";
         }
     }]);
 
@@ -29980,10 +29982,6 @@ var _chat = __webpack_require__(85);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _FirebaseRepository = __webpack_require__(18);
-
-var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
-
 var _register = __webpack_require__(87);
 
 var _register2 = _interopRequireDefault(_register);
@@ -29991,6 +29989,10 @@ var _register2 = _interopRequireDefault(_register);
 var _login = __webpack_require__(86);
 
 var _login2 = _interopRequireDefault(_login);
+
+var _FirebaseRepository = __webpack_require__(18);
+
+var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30064,6 +30066,7 @@ loggit.addEventListener("click", function () {
 signup.addEventListener("click", function () {
     var email = document.getElementById("registeremail");
     var password = document.getElementById("registerpassword");
+    var password2 = document.getElementById("registerpassword2");
     var register = new _register2.default();
     register.register(email.value, password.value);
 });
