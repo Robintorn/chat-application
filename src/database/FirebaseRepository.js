@@ -38,6 +38,20 @@ export default class {
         });
     }
 
+    getDataOnce(urlPointer, event, func) {
+        this.database().ref(urlPointer).once(event, (snapshot) => {
+            let obj = snapshot.val();
+            for(let curr in snapshot.val()) {
+                if(obj.hasOwnProperty(curr)) {
+                    func(obj[curr]);
+                }
+            }
+
+        }, (err) => {
+            console.error(err);
+        });
+    }
+
     // Be careful on using post on data that already exists.
     postData(urlPointer, child, obj) {
         this.database().ref(urlPointer).child(child).set(obj, (err) => {
@@ -100,6 +114,23 @@ export default class {
                 }).catch((err) => {
                     console.error(err);
                 });
+                break;
+            }
+
+            // undra om denna koden funkar, vi får se sen :D
+            case "getcookie": {
+                let decode = decodeURIComponent(document.cookie);
+                let splitCookie = decode.split(";");
+
+                splitCookie.forEach((current) => {
+                    console.log(current);
+                   if(current === email) { // hehe this is bad.... Who the fuck knows
+                       let value = current.split("=");
+                       value = value.replace(';', '');
+                       return value[1];
+                   }
+                });
+                return "";
             }
         }
 
