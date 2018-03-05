@@ -10,7 +10,6 @@ let chatRoomUserIsIn = {};
 
 function init() {
     let chat = new Chat();
-
     chat.getData("/messages/room", 'value', (response) => {
         let rendered = "";
 
@@ -24,32 +23,35 @@ function init() {
     });
 
     chatNav.addEventListener('click', (e) => {
+        document.getElementById('send').addEventListener('click', sendBtn);
+
         document.getElementById('chat-window').innerHTML = "";
-        // remove target and change to id
         replyBox.style.display = "block";
 
         chatRoomUserIsIn = {
             current: e.target.getAttribute("data-value")
         };
         document.getElementById('send').removeEventListener('click', sendBtn);
-        openChat(chat);
+        document.getElementById('send').addEventListener('click', sendBtn);
+
+        openRoom(chat);
     });
 }
 
-function openChat(chat) {
+// problemet är att vi hela tiden skapar nya ref, därav genererar den två gånger eller mer. Så vi måste se till att den förra
+// getData inte skapas igen
 
+function openRoom(chat) {
     chat.render(chatRoomUserIsIn["current"], (rendered) => {
         document.getElementById('chat-window').innerHTML += rendered;
     });
-
-    document.getElementById('send').addEventListener('click', sendBtn);
 }
 
 function sendBtn() {
     let chat = new Chat();
     let message = document.getElementById('message').value;
-    if(message.length > 1) {
-        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jeppan");
+    if(message.length > 0) {
+        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
     }
 }
 

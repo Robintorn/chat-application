@@ -10,6 +10,7 @@ class Login extends FirebaseRepository {
             console.log("DEBUG", user);
             if(!user){
                 console.log("Im here");
+                document.getElementById("introduktion").style.display = "none";
                 let message = document.getElementById("registermessage");
                 message.style.display = "block";
                 message.innerHTML = err.message;
@@ -17,9 +18,7 @@ class Login extends FirebaseRepository {
             }
             else {
                 console.log("Im here 2");
-                document.getElementById("welcome").style.display = "block";
-                document.getElementById("welcome").innerHTML =  "Welcome " + email;
-                document.getElementById("logout").style.display = "block";
+                document.getElementById("introduktion").style.display = "block";
                 document.getElementById("registration/login").style.display = "none";
             }
         });

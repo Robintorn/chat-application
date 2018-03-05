@@ -14,9 +14,7 @@ class Register extends FirebaseRepository {
                 setTimeout(function(){message.style.display = "none"}, 3000);
             }
             else{
-                document.getElementById("welcome").style.display = "block";
-                document.getElementById("welcome").innerHTML =  "Welcome " + email;
-                document.getElementById("logout").style.display = "block";
+                document.getElementById("introduktion").style.display = "block";
                 document.getElementById("register").style.display = "none";
             }
         });

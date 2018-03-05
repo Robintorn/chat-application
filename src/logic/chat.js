@@ -1,29 +1,59 @@
 import FirebaseRepository from "../database/FirebaseRepository";
 
+let roomsBeenIn = {};
+
 class Chat extends FirebaseRepository {
     constructor() {
         super();
     }
 
     sendMessage(room, msg, user) {
+        let date = new Date();
         this.pushData('/messages/room/' + room, {
            message: msg,
            displayName: user,
+            // this really need to be rewritten
+           time: (date.getDay() >= 10 ? date.getDay() : "0" + date.getDay()) + "/" + ((date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1)) + " - " + date.getFullYear() + " | " +
+                (date.getHours() >= 10 ? date.getHours() : "0" + date.getHours()) + ":" +
+                (date.getMinutes() >= 10 ? date.getMinutes() : "0" + date.getMinutes()),
            timestamp: new Date()
         });
     }
 
     render(room, func) {
         console.log(room);
-        this.getData('/messages/room/' + room, 'child_added', (response) => {
-            console.log(response);
-            func(`
-                <div>
-                    <h3>${response["displayName"]}</h3>
-                    <p>${response["message"]}</p>
-                </div>
-            `);
-        });
+
+        if(!hasRoom()) {
+            roomsBeenIn[room] = room;
+            this.getData('/messages/room/' + room, 'child_added', (response) => {
+                console.log(response);
+                func(`
+                    <div>
+                        <h3>${response["displayName"]} | ${response["time"]}</h3>
+                        <p>${response["message"]}</p>
+                    </div>
+                `);
+            });
+        } else {
+            this.getDataOnce('/messages/room/' + room, 'value', (response) => {
+                console.log(response);
+                func(`
+                    <div>
+                        <h3>${response["displayName"]} | ${response["time"]}</h3>
+                        <p>${response["message"]}</p>
+                    </div>
+                `);
+            });
+        }
+
+        function hasRoom() {
+            for(let i = 0; i < Object.keys(roomsBeenIn).length; i++) {
+                if(Object.keys(roomsBeenIn)[i] === room) {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }
 

@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<section id="registreringochlogin">
 <div id="welcome">
 </div>
 <div id="registration/login" class="login">
@@ -25,12 +27,15 @@
     <input id="registerpassword2"type="password" placeholder="Confirm Password">
     <button id="signup" class="btn btn-primary btn-block btn-large">Sign-up</button>
 </div>
-    <button id="logout" style="display: none;">Logout</button>
+</section>
+
+<section id="introduktion" style="display: none;">
     <div id="nav" style="display: none;">
     <div class="agilt">
     <a href="./views/chat.html">Chattrum</a>
     </div>
 </div>
+<button id="logout">Logout</button>
 <nav>
     <ul id="animation">
         <li></li>
@@ -39,6 +44,9 @@
         <li></li>
     </ul>
 </nav>
+</section>
+
+<section id="chat" style="display: none;">
 <div id="chat-navigation" style="background-color: lightblue">
     
     </div>
@@ -52,6 +60,7 @@
         <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
         <button id="send">Skicka!</button>
     </div>
+</section>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
     setTimeout(function(){document.getElementById("animation").style.display = "none"}, 3000);

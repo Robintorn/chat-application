@@ -3251,6 +3251,20 @@ var _class = function () {
                 console.error(err);
             });
         }
+    }, {
+        key: "getDataOnce",
+        value: function getDataOnce(urlPointer, event, func) {
+            this.database().ref(urlPointer).once(event, function (snapshot) {
+                var obj = snapshot.val();
+                for (var curr in snapshot.val()) {
+                    if (obj.hasOwnProperty(curr)) {
+                        func(obj[curr]);
+                    }
+                }
+            }, function (err) {
+                console.error(err);
+            });
+        }
 
         // Be careful on using post on data that already exists.
 
@@ -14578,7 +14592,7 @@ module.exports = g;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -14598,6 +14612,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var roomsBeenIn = {};
+
 var Chat = function (_FirebaseRepository) {
     _inherits(Chat, _FirebaseRepository);
 
@@ -14608,22 +14624,43 @@ var Chat = function (_FirebaseRepository) {
     }
 
     _createClass(Chat, [{
-        key: 'sendMessage',
+        key: "sendMessage",
         value: function sendMessage(room, msg, user) {
+            var date = new Date();
             this.pushData('/messages/room/' + room, {
                 message: msg,
                 displayName: user,
+                // this really need to be rewritten
+                time: (date.getDay() >= 10 ? date.getDay() : "0" + date.getDay()) + "/" + (date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) + " - " + date.getFullYear() + " | " + (date.getHours() >= 10 ? date.getHours() : "0" + date.getHours()) + ":" + (date.getMinutes() >= 10 ? date.getMinutes() : "0" + date.getMinutes()),
                 timestamp: new Date()
             });
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render(room, func) {
             console.log(room);
-            this.getData('/messages/room/' + room, 'child_added', function (response) {
-                console.log(response);
-                func('\n                <div>\n                    <h3>' + response["displayName"] + '</h3>\n                    <p>' + response["message"] + '</p>\n                </div>\n            ');
-            });
+
+            if (!hasRoom()) {
+                roomsBeenIn[room] = room;
+                this.getData('/messages/room/' + room, 'child_added', function (response) {
+                    console.log(response);
+                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+                });
+            } else {
+                this.getDataOnce('/messages/room/' + room, 'value', function (response) {
+                    console.log(response);
+                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+                });
+            }
+
+            function hasRoom() {
+                for (var i = 0; i < Object.keys(roomsBeenIn).length; i++) {
+                    if (Object.keys(roomsBeenIn)[i] === room) {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
     }]);
 
@@ -14673,6 +14710,7 @@ var Login = function (_FirebaseRepository) {
                 console.log("DEBUG", user);
                 if (!user) {
                     console.log("Im here");
+                    document.getElementById("introduktion").style.display = "none";
                     var message = document.getElementById("registermessage");
                     message.style.display = "block";
                     message.innerHTML = err.message;
@@ -14681,9 +14719,7 @@ var Login = function (_FirebaseRepository) {
                     }, 3000);
                 } else {
                     console.log("Im here 2");
-                    document.getElementById("welcome").style.display = "block";
-                    document.getElementById("welcome").innerHTML = "Welcome " + email;
-                    document.getElementById("logout").style.display = "block";
+                    document.getElementById("introduktion").style.display = "block";
                     document.getElementById("registration/login").style.display = "none";
                 }
             });
@@ -14755,9 +14791,7 @@ var Register = function (_FirebaseRepository) {
                         message.style.display = "none";
                     }, 3000);
                 } else {
-                    document.getElementById("welcome").style.display = "block";
-                    document.getElementById("welcome").innerHTML = "Welcome " + email;
-                    document.getElementById("logout").style.display = "block";
+                    document.getElementById("introduktion").style.display = "block";
                     document.getElementById("register").style.display = "none";
                 }
             });
@@ -30003,7 +30037,6 @@ var chatRoomUserIsIn = {};
 
 function init() {
     var chat = new _chat2.default();
-
     chat.getData("/messages/room", 'value', function (response) {
         var rendered = "";
 
@@ -30015,32 +30048,35 @@ function init() {
     });
 
     chatNav.addEventListener('click', function (e) {
+        document.getElementById('send').addEventListener('click', sendBtn);
+
         document.getElementById('chat-window').innerHTML = "";
-        // remove target and change to id
         replyBox.style.display = "block";
 
         chatRoomUserIsIn = {
             current: e.target.getAttribute("data-value")
         };
         document.getElementById('send').removeEventListener('click', sendBtn);
-        openChat(chat);
+        document.getElementById('send').addEventListener('click', sendBtn);
+
+        openRoom(chat);
     });
 }
 
-function openChat(chat) {
+// problemet är att vi hela tiden skapar nya ref, därav genererar den två gånger eller mer. Så vi måste se till att den förra
+// getData inte skapas igen
 
+function openRoom(chat) {
     chat.render(chatRoomUserIsIn["current"], function (rendered) {
         document.getElementById('chat-window').innerHTML += rendered;
     });
-
-    document.getElementById('send').addEventListener('click', sendBtn);
 }
 
 function sendBtn() {
     var chat = new _chat2.default();
     var message = document.getElementById('message').value;
-    if (message.length > 1) {
-        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jeppan");
+    if (message.length > 0) {
+        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
     }
 }
 
