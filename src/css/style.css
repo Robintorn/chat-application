@@ -200,6 +200,11 @@ li:nth-child(4){
 	height:300px;
 }
 
+.flex{
+	display: flex;
+	justify-content: center;
+}
+
 #welcome{
 	display: none; 
 	color: white; 

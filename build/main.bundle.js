@@ -14803,7 +14803,14 @@ var Register = function (_FirebaseRepository) {
                 } else {
                     document.getElementById("introduktion").style.display = "block";
                     document.getElementById("register").style.display = "none";
+                    document.getElementById("animation").style.display = "block";
                     document.getElementById("logout").style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("animation").style.display = "none";
+                    }, 3000);
+                    setTimeout(function () {
+                        document.getElementById("nav").style.display = "block";
+                    }, 3000);
                 }
             });
         }
