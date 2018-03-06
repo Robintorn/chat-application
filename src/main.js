@@ -87,11 +87,20 @@ logout.addEventListener("click", () => {
     logout.logout();
 })
 
-/* Angående tillgång till registrering */
+/* Angående tillgång till registrering. */
 
 let sign = document.getElementById("sign");
 
 sign.addEventListener("click", function(){
     document.getElementById("register").style.display = "block";
     document.getElementById("registration/login").style.display = "none";
+})
+
+/* Tillgång till chatrummet. */
+
+let showChatroom = document.getElementById("show-chatroom");
+
+showChatroom.addEventListener("click", function(){
+    document.getElementById("chat").style.display = "block";
+    document.getElementById("introduktion").style.display = "none";
 })
