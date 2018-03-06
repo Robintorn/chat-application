@@ -14721,6 +14721,14 @@ var Login = function (_FirebaseRepository) {
                     console.log("Im here 2");
                     document.getElementById("introduktion").style.display = "block";
                     document.getElementById("registration/login").style.display = "none";
+                    document.getElementById("animation").style.display = "block";
+                    document.getElementById("logout").style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("animation").style.display = "none";
+                    }, 3000);
+                    setTimeout(function () {
+                        document.getElementById("nav").style.display = "block";
+                    }, 3000);
                 }
             });
         }
@@ -14731,6 +14739,7 @@ var Login = function (_FirebaseRepository) {
             document.getElementById("registration/login").style.display = "block";
             document.getElementById("welcome").style.display = "none";
             document.getElementById("logout").style.display = "none";
+            document.getElementById("nav").style.display = "none";
             console.log("Logged out");
         }
     }, {
@@ -14787,12 +14796,14 @@ var Register = function (_FirebaseRepository) {
                     var message = document.getElementById("registermessage");
                     message.style.display = "block";
                     message.innerHTML = err.message;
+                    document.getElementById("logout").style.display = "none";
                     setTimeout(function () {
                         message.style.display = "none";
                     }, 3000);
                 } else {
                     document.getElementById("introduktion").style.display = "block";
                     document.getElementById("register").style.display = "none";
+                    document.getElementById("logout").style.display = "block";
                 }
             });
         }

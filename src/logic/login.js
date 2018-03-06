@@ -20,6 +20,10 @@ class Login extends FirebaseRepository {
                 console.log("Im here 2");
                 document.getElementById("introduktion").style.display = "block";
                 document.getElementById("registration/login").style.display = "none";
+                document.getElementById("animation").style.display = "block";
+                document.getElementById("logout").style.display = "block";
+                setTimeout(function(){document.getElementById("animation").style.display = "none"}, 3000);
+                setTimeout(function(){document.getElementById("nav").style.display = "block"}, 3000);
             }
         });
     }
@@ -29,6 +33,7 @@ class Login extends FirebaseRepository {
         document.getElementById("registration/login").style.display = "block";
         document.getElementById("welcome").style.display = "none";
         document.getElementById("logout").style.display = "none";
+        document.getElementById("nav").style.display = "none";
         console.log("Logged out");
     }
 
