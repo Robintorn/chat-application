@@ -33,7 +33,7 @@ class Login extends FirebaseRepository {
         document.getElementById("span").innerHTML =
         "Logged in as ";
         document.getElementById("id").innerHTML =
-          email.value;
+          email;
       }
     });
   }

@@ -14731,7 +14731,7 @@ var Login = function (_FirebaseRepository) {
           }, 3000);
           document.getElementById("loggedInUser").style.display = "block";
           document.getElementById("span").innerHTML = "Logged in as ";
-          document.getElementById("id").innerHTML = email.value;
+          document.getElementById("id").innerHTML = email;
         }
       });
     }
