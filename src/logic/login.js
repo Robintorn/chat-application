@@ -30,7 +30,8 @@ class Login extends FirebaseRepository {
           document.getElementById("nav").style.display = "block";
         }, 3000);
         document.getElementById("loggedInUser").style.display = "block";
-        document.getElementById("loggedInUser").innerHTML = email;
+        document.getElementById("loggedInUser").innerHTML =
+          "Logged in as" + email;
       }
     });
   }
