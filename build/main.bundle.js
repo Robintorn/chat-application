@@ -14677,7 +14677,7 @@ exports.default = Chat;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -14695,61 +14695,64 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Login = function (_FirebaseRepository) {
-    _inherits(Login, _FirebaseRepository);
+  _inherits(Login, _FirebaseRepository);
 
-    function Login() {
-        _classCallCheck(this, Login);
+  function Login() {
+    _classCallCheck(this, Login);
 
-        return _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this));
+    return _possibleConstructorReturn(this, (Login.__proto__ || Object.getPrototypeOf(Login)).call(this));
+  }
+
+  _createClass(Login, [{
+    key: "login",
+    value: function login(email, password) {
+      this.auth("signInUserWithEmailPass", email, password, function (user) {
+        console.log("DEBUG", user);
+        if (!user) {
+          console.log("Im here");
+          document.getElementById("introduktion").style.display = "none";
+          var message = document.getElementById("registermessage");
+          message.style.display = "block";
+          message.innerHTML = err.message;
+          setTimeout(function () {
+            message.style.display = "none";
+          }, 3000);
+        } else {
+          console.log("Im here 2");
+          document.getElementById("introduktion").style.display = "block";
+          document.getElementById("registration/login").style.display = "none";
+          document.getElementById("animation").style.display = "block";
+          document.getElementById("logout").style.display = "block";
+          setTimeout(function () {
+            document.getElementById("animation").style.display = "none";
+          }, 3000);
+          setTimeout(function () {
+            document.getElementById("nav").style.display = "block";
+          }, 3000);
+          document.getElementById("loggedInUser").style.display = "block";
+          document.getElementById("loggedInUser").innerHTML = email;
+        }
+      });
     }
+  }, {
+    key: "logout",
+    value: function logout() {
+      this.auth("signOut", null, null, null);
+      document.getElementById("registration/login").style.display = "block";
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("logout").style.display = "none";
+      document.getElementById("nav").style.display = "none";
+      document.getElementById("loggedInUser").style.display = "none";
+      console.log("Logged out");
+    }
+  }, {
+    key: "logingithub",
+    value: function logingithub() {
+      this.auth("signInWithGithub", null, null, null);
+    }
+  }]);
 
-    _createClass(Login, [{
-        key: "login",
-        value: function login(email, password) {
-            this.auth("signInUserWithEmailPass", email, password, function (user) {
-                console.log("DEBUG", user);
-                if (!user) {
-                    console.log("Im here");
-                    document.getElementById("introduktion").style.display = "none";
-                    var message = document.getElementById("registermessage");
-                    message.style.display = "block";
-                    message.innerHTML = err.message;
-                    setTimeout(function () {
-                        message.style.display = "none";
-                    }, 3000);
-                } else {
-                    console.log("Im here 2");
-                    document.getElementById("introduktion").style.display = "block";
-                    document.getElementById("registration/login").style.display = "none";
-                    document.getElementById("animation").style.display = "block";
-                    document.getElementById("logout").style.display = "block";
-                    setTimeout(function () {
-                        document.getElementById("animation").style.display = "none";
-                    }, 3000);
-                    setTimeout(function () {
-                        document.getElementById("nav").style.display = "block";
-                    }, 3000);
-                }
-            });
-        }
-    }, {
-        key: "logout",
-        value: function logout() {
-            this.auth("signOut", null, null, null);
-            document.getElementById("registration/login").style.display = "block";
-            document.getElementById("welcome").style.display = "none";
-            document.getElementById("logout").style.display = "none";
-            document.getElementById("nav").style.display = "none";
-            console.log("Logged out");
-        }
-    }, {
-        key: "logingithub",
-        value: function logingithub() {
-            this.auth("signInWithGithub", null, null, null);
-        }
-    }]);
-
-    return Login;
+  return Login;
 }(_FirebaseRepository3.default);
 
 exports.default = Login;
@@ -30028,7 +30031,7 @@ module.exports = Promise;
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-'use strict';
+"use strict";
 
 var _chat = __webpack_require__(85);
 
@@ -30048,54 +30051,54 @@ var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var chatNav = document.getElementById('chat-navigation');
-var replyBox = document.getElementById('reply');
+var chatNav = document.getElementById("chat-navigation");
+var replyBox = document.getElementById("reply");
 
 var chatRoomUserIsIn = {};
 
 function init() {
-    var chat = new _chat2.default();
-    chat.getData("/messages/room", 'value', function (response) {
-        var rendered = "";
+  var chat = new _chat2.default();
+  chat.getData("/messages/room", "value", function (response) {
+    var rendered = "";
 
-        Object.keys(response).map(function (item) {
-            rendered += '\n                <h3 data-value="' + item + '">' + item + '</h3>\n            ';
-        });
-        chatNav.innerHTML = rendered;
-        rendered = "";
+    Object.keys(response).map(function (item) {
+      rendered += "\n                <h3 data-value=\"" + item + "\">" + item + "</h3>\n            ";
     });
+    chatNav.innerHTML = rendered;
+    rendered = "";
+  });
 
-    chatNav.addEventListener('click', function (e) {
-        document.getElementById('send').addEventListener('click', sendBtn);
+  chatNav.addEventListener("click", function (e) {
+    document.getElementById("send").addEventListener("click", sendBtn);
 
-        document.getElementById('chat-window').innerHTML = "";
-        replyBox.style.display = "block";
+    document.getElementById("chat-window").innerHTML = "";
+    replyBox.style.display = "block";
 
-        chatRoomUserIsIn = {
-            current: e.target.getAttribute("data-value")
-        };
-        document.getElementById('send').removeEventListener('click', sendBtn);
-        document.getElementById('send').addEventListener('click', sendBtn);
+    chatRoomUserIsIn = {
+      current: e.target.getAttribute("data-value")
+    };
+    document.getElementById("send").removeEventListener("click", sendBtn);
+    document.getElementById("send").addEventListener("click", sendBtn);
 
-        openRoom(chat);
-    });
+    openRoom(chat);
+  });
 }
 
 // problemet är att vi hela tiden skapar nya ref, därav genererar den två gånger eller mer. Så vi måste se till att den förra
 // getData inte skapas igen
 
 function openRoom(chat) {
-    chat.render(chatRoomUserIsIn["current"], function (rendered) {
-        document.getElementById('chat-window').innerHTML += rendered;
-    });
+  chat.render(chatRoomUserIsIn["current"], function (rendered) {
+    document.getElementById("chat-window").innerHTML += rendered;
+  });
 }
 
 function sendBtn() {
-    var chat = new _chat2.default();
-    var message = document.getElementById('message').value;
-    if (message.length > 0) {
-        chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
-    }
+  var chat = new _chat2.default();
+  var message = document.getElementById("message").value;
+  if (message.length > 0) {
+    chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
+  }
 }
 
 init();
@@ -30106,28 +30109,28 @@ var signup = document.getElementById("signup");
 var logout = document.getElementById("logout");
 
 login.addEventListener("click", function () {
-    var email = document.getElementById("email");
-    var password = document.getElementById("password");
-    var login = new _login2.default();
-    login.login(email.value, password.value);
+  var email = document.getElementById("email");
+  var password = document.getElementById("password");
+  var login = new _login2.default();
+  login.login(email.value, password.value);
 });
 
 loggit.addEventListener("click", function () {
-    var loggit = new _login2.default();
-    loggit.logingithub();
+  var loggit = new _login2.default();
+  loggit.logingithub();
 });
 
 signup.addEventListener("click", function () {
-    var email = document.getElementById("registeremail");
-    var password = document.getElementById("registerpassword");
-    var password2 = document.getElementById("registerpassword2");
-    var register = new _register2.default();
-    register.register(email.value, password.value);
+  var email = document.getElementById("registeremail");
+  var password = document.getElementById("registerpassword");
+  var password2 = document.getElementById("registerpassword2");
+  var register = new _register2.default();
+  register.register(email.value, password.value);
 });
 
 logout.addEventListener("click", function () {
-    var logout = new _login2.default();
-    logout.logout();
+  var logout = new _login2.default();
+  logout.logout();
 });
 
 /* Angående tillgång till registrering. */
@@ -30135,8 +30138,8 @@ logout.addEventListener("click", function () {
 var sign = document.getElementById("sign");
 
 sign.addEventListener("click", function () {
-    document.getElementById("register").style.display = "block";
-    document.getElementById("registration/login").style.display = "none";
+  document.getElementById("register").style.display = "block";
+  document.getElementById("registration/login").style.display = "none";
 });
 
 /* Tillgång till chatrummet. */
@@ -30144,8 +30147,8 @@ sign.addEventListener("click", function () {
 var showChatroom = document.getElementById("show-chatroom");
 
 showChatroom.addEventListener("click", function () {
-    document.getElementById("chat").style.display = "block";
-    document.getElementById("introduktion").style.display = "none";
+  document.getElementById("chat").style.display = "block";
+  document.getElementById("introduktion").style.display = "none";
 });
 
 /***/ }

@@ -1,68 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
+    <div id="loggedInUser" style="display: none;">Logged in as </div>
 
-<section id="registreringochlogin">
-<div id="welcome">
-</div>
-<div id="registration/login" class="login">
-    <h1>Login</h1>
-    <label id="message"></label>
-    <input id="email" type="email" placeholder="Email">
-    <input id="password" type="password" placeholder="Password">
-    <button id="login" class="btn btn-primary btn-block btn-large">Log-in</button>
-    <button id="sign" class="btn btn-block btn-large">Sign-up</button>
-    <button id="github-login" class="btn btn-primary btn-block btn-large">Log-in with Github</button>
-</div>
-<div id="register" class="login" style="display: none">
-    <h1>Register</h1>
-    <label id="registermessage"></label>
-    <input id="registeremail" type="email" placeholder="Email">
-    <input id="registerpassword"type="password" placeholder="Password">
-    <input id="registerpassword2"type="password" placeholder="Confirm Password">
-    <button id="signup" class="btn btn-primary btn-block btn-large">Sign-up</button>
-</div>
-</section>
+    <section id="registreringochlogin">
+        <div id="welcome">
+        </div>
 
-<section id="introduktion" style="display: none;">
-    <div id="nav" style="display: none;">
-    <div class="agilt">
-    <a id="show-chatroom">Chattrum</a>
-    </div>
-</div>
-<nav>
-    <ul id="animation">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-    </ul>
-</nav>
-<div class="flex">
-<button id="logout" class="btn btn-primary btn-large" style="display: none;">Logout</button>
-</div>
-</section>
+        <div id="registration/login" class="login">
+            <h1>Login</h1>
+            <label id="message"></label>
+            <input id="email" type="email" placeholder="Email">
+            <input id="password" type="password" placeholder="Password">
+            <button id="login" class="btn btn-primary btn-block btn-large">Log-in</button>
+            <button id="sign" class="btn btn-block btn-large">Sign-up</button>
+            <button id="github-login" class="btn btn-primary btn-block btn-large">Log-in with Github</button>
+        </div>
+        <div id="register" class="login" style="display: none">
+            <h1>Register</h1>
+            <label id="registermessage"></label>
+            <input id="registeremail" type="email" placeholder="Email">
+            <input id="registerpassword" type="password" placeholder="Password">
+            <input id="registerpassword2" type="password" placeholder="Confirm Password">
+            <button id="signup" class="btn btn-primary btn-block btn-large">Sign-up</button>
+        </div>
+    </section>
 
-<section id="chat" style="display: none;">
-<div id="chat-navigation" style="background-color: lightblue">
-    
-    </div>
-    
-    <div id="chat-window" style="background-color: lightcoral">
-    
-    </div>
-    
-    <div id="reply" style="display: none;">
-        <label for="message">Meddelande</label>
-        <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
-        <button id="send">Skicka!</button>
-    </div>
-</section>
-<script src="../build/main.bundle.js"></script>
+    <section id="introduktion" style="display: none;">
+        <div id="nav" style="display: none;">
+            <div class="agilt">
+                <a id="show-chatroom">Chattrum</a>
+            </div>
+        </div>
+        <nav>
+            <ul id="animation">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </nav>
+        <div class="flex">
+            <button id="logout" class="btn btn-primary btn-large" style="display: none;">Logout</button>
+        </div>
+    </section>
+
+    <section id="chat" style="display: none;">
+        <div id="chat-navigation" style="background-color: lightblue">
+
+        </div>
+
+        <div id="chat-window" style="background-color: lightcoral">
+
+        </div>
+
+        <div id="reply" style="display: none;">
+            <label for="message">Meddelande</label>
+            <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
+            <button id="send">Skicka!</button>
+        </div>
+    </section>
+    <script src="../build/main.bundle.js"></script>
 </body>
+
 </html>
