@@ -30052,6 +30052,54 @@ var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var login = document.getElementById("login");
+var loggit = document.getElementById("github-login");
+var signup = document.getElementById("signup");
+var logout = document.getElementById("logout");
+
+login.addEventListener("click", function () {
+  var email = document.getElementById("email");
+  var password = document.getElementById("password");
+  var login = new _login2.default();
+  login.login(email.value, password.value);
+});
+
+loggit.addEventListener("click", function () {
+  var loggit = new _login2.default();
+  loggit.logingithub();
+});
+
+signup.addEventListener("click", function () {
+  var email = document.getElementById("registeremail");
+  var password = document.getElementById("registerpassword");
+  var password2 = document.getElementById("registerpassword2");
+  var register = new _register2.default();
+  register.register(email.value, password.value);
+});
+
+logout.addEventListener("click", function () {
+  var logout = new _login2.default();
+  logout.logout();
+});
+
+/* Angående tillgång till registrering. */
+
+var sign = document.getElementById("sign");
+
+sign.addEventListener("click", function () {
+  document.getElementById("register").style.display = "block";
+  document.getElementById("registration/login").style.display = "none";
+});
+
+/* Tillgång till chatrummet. */
+
+var showChatroom = document.getElementById("show-chatroom");
+
+showChatroom.addEventListener("click", function () {
+  document.getElementById("chat").style.display = "block";
+  document.getElementById("introduktion").style.display = "none";
+});
+
 var chatNav = document.getElementById("chat-navigation");
 var replyBox = document.getElementById("reply");
 
@@ -30103,54 +30151,6 @@ function sendBtn() {
 }
 
 init();
-
-var login = document.getElementById("login");
-var loggit = document.getElementById("github-login");
-var signup = document.getElementById("signup");
-var logout = document.getElementById("logout");
-
-login.addEventListener("click", function () {
-  var email = document.getElementById("email");
-  var password = document.getElementById("password");
-  var login = new _login2.default();
-  login.login(email.value, password.value);
-});
-
-loggit.addEventListener("click", function () {
-  var loggit = new _login2.default();
-  loggit.logingithub();
-});
-
-signup.addEventListener("click", function () {
-  var email = document.getElementById("registeremail");
-  var password = document.getElementById("registerpassword");
-  var password2 = document.getElementById("registerpassword2");
-  var register = new _register2.default();
-  register.register(email.value, password.value);
-});
-
-logout.addEventListener("click", function () {
-  var logout = new _login2.default();
-  logout.logout();
-});
-
-/* Angående tillgång till registrering. */
-
-var sign = document.getElementById("sign");
-
-sign.addEventListener("click", function () {
-  document.getElementById("register").style.display = "block";
-  document.getElementById("registration/login").style.display = "none";
-});
-
-/* Tillgång till chatrummet. */
-
-var showChatroom = document.getElementById("show-chatroom");
-
-showChatroom.addEventListener("click", function () {
-  document.getElementById("chat").style.display = "block";
-  document.getElementById("introduktion").style.display = "none";
-});
 
 /***/ }
 /******/ ]);
