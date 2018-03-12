@@ -48,10 +48,11 @@ function openRoom(chat) {
 }
 
 function sendBtn() {
+  let email = document.getElementById("email");
   let chat = new Chat();  
   let message = document.getElementById("message").value;
   if (message.length > 0) {
-    chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
+    chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
   }
 }
 

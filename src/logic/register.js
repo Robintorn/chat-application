@@ -21,6 +21,11 @@ class Register extends FirebaseRepository {
                 document.getElementById("logout").style.display = "block";
                 setTimeout(function(){document.getElementById("animation").style.display = "none"}, 3000);
                 setTimeout(function(){document.getElementById("nav").style.display = "block"}, 3000);
+                document.getElementById("loggedInUser").style.display = "block";
+                document.getElementById("span").innerHTML =
+                "Logged in as ";
+                document.getElementById("id").innerHTML =
+                  email;
             }
         });
     }

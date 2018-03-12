@@ -14815,6 +14815,9 @@ var Register = function (_FirebaseRepository) {
                     setTimeout(function () {
                         document.getElementById("nav").style.display = "block";
                     }, 3000);
+                    document.getElementById("loggedInUser").style.display = "block";
+                    document.getElementById("span").innerHTML = "Logged in as ";
+                    document.getElementById("id").innerHTML = email;
                 }
             });
         }
@@ -30095,10 +30098,11 @@ function openRoom(chat) {
 }
 
 function sendBtn() {
+  var email = document.getElementById("email");
   var chat = new _chat2.default();
   var message = document.getElementById("message").value;
   if (message.length > 0) {
-    chat.sendMessage(chatRoomUserIsIn["current"], message, "Jepan");
+    chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
   }
 }
 
