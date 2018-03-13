@@ -8,16 +8,7 @@ class Login extends FirebaseRepository {
   login(email, password) {
     this.auth("signInUserWithEmailPass", email, password, user => {
       console.log("DEBUG", user);
-      if (!user) {
-        console.log("Im here");
-        document.getElementById("introduktion").style.display = "none";
-        let message = document.getElementById("registermessage");
-        message.style.display = "block";
-        message.innerHTML = err.message;
-        setTimeout(function() {
-          message.style.display = "none";
-        }, 3000);
-      } else {
+      if (user) {
         console.log("Im here 2");
         document.getElementById("introduktion").style.display = "block";
         document.getElementById("registration/login").style.display = "none";
@@ -34,7 +25,7 @@ class Login extends FirebaseRepository {
         "Logged in as ";
         document.getElementById("id").innerHTML =
           email;
-      }
+       } 
     });
   }
 

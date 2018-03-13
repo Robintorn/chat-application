@@ -3314,6 +3314,13 @@ var _class = function () {
                     {
                         firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
+                            var message = document.getElementById("registermessage2");
+                            message.style.display = "block";
+                            message.innerHTML = err.message;
+                            document.getElementById("logout").style.display = "none";
+                            setTimeout(function () {
+                                message.style.display = "none";
+                            }, 3000);
                         });
                         break;
                     }
@@ -3322,6 +3329,14 @@ var _class = function () {
                     {
                         firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
                             console.error(err);
+                            console.log("Im here");
+                            document.getElementById("introduktion").style.display = "none";
+                            var message = document.getElementById("registermessage1");
+                            message.style.display = "block";
+                            message.innerHTML = err.message;
+                            setTimeout(function () {
+                                message.style.display = "none";
+                            }, 3000);
                         });
                         break;
                     }
@@ -14708,16 +14723,7 @@ var Login = function (_FirebaseRepository) {
     value: function login(email, password) {
       this.auth("signInUserWithEmailPass", email, password, function (user) {
         console.log("DEBUG", user);
-        if (!user) {
-          console.log("Im here");
-          document.getElementById("introduktion").style.display = "none";
-          var message = document.getElementById("registermessage");
-          message.style.display = "block";
-          message.innerHTML = err.message;
-          setTimeout(function () {
-            message.style.display = "none";
-          }, 3000);
-        } else {
+        if (user) {
           console.log("Im here 2");
           document.getElementById("introduktion").style.display = "block";
           document.getElementById("registration/login").style.display = "none";
@@ -14796,15 +14802,7 @@ var Register = function (_FirebaseRepository) {
         key: "register",
         value: function register(email, password) {
             this.auth("createUserWithEmailPass", email, password, function (user) {
-                if (!user) {
-                    var message = document.getElementById("registermessage");
-                    message.style.display = "block";
-                    message.innerHTML = err.message;
-                    document.getElementById("logout").style.display = "none";
-                    setTimeout(function () {
-                        message.style.display = "none";
-                    }, 3000);
-                } else {
+                if (user) {
                     document.getElementById("introduktion").style.display = "block";
                     document.getElementById("register").style.display = "none";
                     document.getElementById("animation").style.display = "block";
@@ -14818,6 +14816,14 @@ var Register = function (_FirebaseRepository) {
                     document.getElementById("loggedInUser").style.display = "block";
                     document.getElementById("span").innerHTML = "Logged in as ";
                     document.getElementById("id").innerHTML = email;
+                } else {
+                    var message = document.getElementById("registermessage");
+                    message.style.display = "block";
+                    message.innerHTML = err.message;
+                    document.getElementById("logout").style.display = "none";
+                    setTimeout(function () {
+                        message.style.display = "none";
+                    }, 3000);
                 }
             });
         }

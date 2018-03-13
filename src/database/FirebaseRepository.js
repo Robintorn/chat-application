@@ -91,6 +91,11 @@ export default class {
             case "createUserWithEmailPass": {
                 firebase.auth().createUserWithEmailAndPassword(email, password).catch((err) => {
                     console.error(err);
+                    let message = document.getElementById("registermessage2");
+                    message.style.display = "block";
+                    message.innerHTML = err.message;
+                    document.getElementById("logout").style.display = "none";
+                    setTimeout(function(){message.style.display = "none"}, 3000);
                 });
                 break;
             }
@@ -98,6 +103,14 @@ export default class {
             case "signInUserWithEmailPass": {
                 firebase.auth().signInWithEmailAndPassword(email, password).catch((err) => {
                    console.error(err);
+                   console.log("Im here");
+                   document.getElementById("introduktion").style.display = "none";
+                   let message = document.getElementById("registermessage1");
+                   message.style.display = "block";
+                   message.innerHTML = err.message;
+                   setTimeout(function() {
+                     message.style.display = "none";
+                   }, 3000);
                 });
                 break;
             }
