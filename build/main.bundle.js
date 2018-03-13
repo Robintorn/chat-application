@@ -14816,14 +14816,6 @@ var Register = function (_FirebaseRepository) {
                     document.getElementById("loggedInUser").style.display = "block";
                     document.getElementById("span").innerHTML = "Logged in as ";
                     document.getElementById("id").innerHTML = email;
-                } else {
-                    var message = document.getElementById("registermessage");
-                    message.style.display = "block";
-                    message.innerHTML = err.message;
-                    document.getElementById("logout").style.display = "none";
-                    setTimeout(function () {
-                        message.style.display = "none";
-                    }, 3000);
                 }
             });
         }
@@ -30105,10 +30097,13 @@ function openRoom(chat) {
 
 function sendBtn() {
   var email = document.getElementById("email");
+  var registrering = document.getElementById("registeremail");
   var chat = new _chat2.default();
   var message = document.getElementById("message").value;
-  if (message.length > 0) {
+  if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
+  } else if (message.length > 0 && registrering.value) {
+    chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
 }
 
