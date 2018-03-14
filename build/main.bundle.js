@@ -14659,12 +14659,12 @@ var Chat = function (_FirebaseRepository) {
                 roomsBeenIn[room] = room;
                 this.getData('/messages/room/' + room, 'child_added', function (response) {
                     console.log(response);
-                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+                    func("\n                    <div class=\"new-message\">\n                    <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                    <p>" + response["message"] + "</p>\n                    </div>\n                ");
                 });
             } else {
                 this.getDataOnce('/messages/room/' + room, 'value', function (response) {
                     console.log(response);
-                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+                    func("\n                    <div class=\"new-message\">\n                        <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
                 });
             }
 
@@ -14750,6 +14750,9 @@ var Login = function (_FirebaseRepository) {
       document.getElementById("logout").style.display = "none";
       document.getElementById("nav").style.display = "none";
       document.getElementById("loggedInUser").style.display = "none";
+      document.getElementById("chat").style.display = "none";
+      document.getElementById("style-chat").style.display = "none";
+      document.getElementById("chat-navigation").style.display = "none";
       console.log("Logged out");
     }
   }, {
