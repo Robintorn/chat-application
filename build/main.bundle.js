@@ -14680,12 +14680,12 @@ var Chat = function (_FirebaseRepository) {
         roomsBeenIn[room] = room;
         this.getData("/messages/room/" + room, "child_added", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                    <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                    <p>" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>>" + response["displayName"] + "| " + response["time"] + "</span>\n                     <p>" + response["message"] + "</p>\n                    </div>\n                ");
         });
       } else {
         this.getDataOnce("/messages/room/" + room, "value", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                        <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                    \n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
         });
       }
 
@@ -30126,11 +30126,7 @@ function sendBtn() {
   var message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    setTimeout(function () {
-      var emptyInput = document.getElementById("message");
-      emptyInput.value = "";
-      emptyInput.reset(); //varför töms inte input fätet?? har testat message= "";
-    }, 1000);
+    message = "";
   } else if (message.length > 0 && registrering.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
