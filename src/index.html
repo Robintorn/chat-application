@@ -8,7 +8,12 @@
 </head>
 
 <body>
-    <div id="loggedInUser" style="display: none; color: white;"><span id="span"></span><span id="id"></span></div>
+    <div id="loggedInUser" style="display: none;"> <div class="flex"><span id="span"> </span><span id="id"> </span>
+       
+                <button id="logout" class="btn btn-primary btn-large" style="display: none;">Logout</button>
+            </div>
+</div>
+
 
     <section id="registreringochlogin">
         <div id="welcome">
@@ -33,9 +38,11 @@
     </section>
 
     <section id="introduktion" style="display: none;">
+
+         
         <div id="nav" style="display: none;">
             <div class="agilt">
-                <a id="show-chatroom">Chattrum</a>
+                <a id="show-chatroom">Go to Chat</a>
             </div>
         </div>
         <nav>
@@ -46,25 +53,27 @@
                 <li></li>
             </ul>
         </nav>
-        <div class="flex">
-            <button id="logout" class="btn btn-primary btn-large" style="display: none;">Logout</button>
-        </div>
+  
     </section>
 
     <section id="chat" style="display: none;">
-        <div id="chat-navigation" style="background-color: lightblue">
+        <div id="style-chat">
 
+                <div id="chat-navigation">
+                        
+                                </div>
+                        
+                                <div id="chat-window">
+                        
+                                </div>
+                        
+                                <div id="reply" style="display: none;">
+                                    <label for="message">Meddelande</label>
+                                    <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
+                                    <button id="send">Skicka!</button>
+                                </div>
         </div>
-
-        <div id="chat-window" style="background-color: lightcoral">
-
-        </div>
-
-        <div id="reply" style="display: none;">
-            <label for="message">Meddelande</label>
-            <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
-            <button id="send">Skicka!</button>
-        </div>
+     
     </section>
     <script src="../build/main.bundle.js"></script>
 </body>
