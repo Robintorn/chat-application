@@ -28,9 +28,9 @@ class Chat extends FirebaseRepository {
             this.getData('/messages/room/' + room, 'child_added', (response) => {
                 console.log(response);
                 func(`
-                    <div>
-                        <h3>${response["displayName"]} | ${response["time"]}</h3>
-                        <p>${response["message"]}</p>
+                    <div class="new-message">
+                    <span><h3>${response["displayName"]}</h3></span><span><h5> | ${response["time"]}</h5></span>
+                    <p>${response["message"]}</p>
                     </div>
                 `);
             });
@@ -38,8 +38,8 @@ class Chat extends FirebaseRepository {
             this.getDataOnce('/messages/room/' + room, 'value', (response) => {
                 console.log(response);
                 func(`
-                    <div>
-                        <h3>${response["displayName"]} | ${response["time"]}</h3>
+                    <div class="new-message">
+                        <span><h3>${response["displayName"]}</h3></span><span><h5> | ${response["time"]}</h5></span>
                         <p>${response["message"]}</p>
                     </div>
                 `);

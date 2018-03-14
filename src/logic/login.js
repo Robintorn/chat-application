@@ -36,6 +36,9 @@ class Login extends FirebaseRepository {
     document.getElementById("logout").style.display = "none";
     document.getElementById("nav").style.display = "none";
     document.getElementById("loggedInUser").style.display = "none";
+    document.getElementById("chat").style.display = "none";
+    document.getElementById("style-chat").style.display = "none";
+    document.getElementById("chat-navigation").style.display = "none";
     console.log("Logged out");
   }
 

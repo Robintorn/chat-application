@@ -67,18 +67,20 @@
                         
                                 </div>
                         
-                                <div id="chat-window">
+                                <div id="chat-window" style="overflow-y:auto;">
                         
                                 </div>
                         
                                 <div id="reply" style="display: none;">
-                                    <label for="message">Meddelande</label>
-                                    <textarea id="message" placeholder="Skriv ett meddelande!"></textarea>
-                                    <button id="send">Skicka!</button>
-                                </div>
+                                    <div id="style-reply">
+                                            <textarea id="message" placeholder="Write here to chat"></textarea>
+                                            <button id="send" class="btn btn-primary">Send</button>        
+                                    </div>
+                             </div>
         </div>
      
     </section>
+    
     <script src="../build/main.bundle.js"></script>
 </body>
 
