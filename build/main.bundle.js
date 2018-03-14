@@ -14610,7 +14610,7 @@ module.exports = g;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -14630,56 +14630,77 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var roomsBeenIn = {};
 
 var Chat = function (_FirebaseRepository) {
-    _inherits(Chat, _FirebaseRepository);
+  _inherits(Chat, _FirebaseRepository);
 
-    function Chat() {
-        _classCallCheck(this, Chat);
+  function Chat() {
+    _classCallCheck(this, Chat);
 
-        return _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this));
+    return _possibleConstructorReturn(this, (Chat.__proto__ || Object.getPrototypeOf(Chat)).call(this));
+  }
+
+  _createClass(Chat, [{
+    key: "sendMessage",
+    value: function sendMessage(room, msg, user) {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1;
+      var yyyy = today.getFullYear();
+      var hh = today.getHours();
+      var min = today.getMinutes();
+      var sec = today.getSeconds();
+
+      if (dd < 10) {
+        dd = "0" + dd;
+      }
+      if (mm < 10) {
+        mm = "0" + mm;
+      }
+      if (hh < 10) {
+        hh = "0" + hh;
+      }
+      if (min < 10) {
+        min = "0" + min;
+      }
+
+      today = mm + "/" + dd + "/" + yyyy + "   " + hh + ":" + min;
+
+      this.pushData("/messages/room/" + room, {
+        message: msg,
+        displayName: user,
+        // this really need to be rewritten
+        time: today
+      });
     }
+  }, {
+    key: "render",
+    value: function render(room, func) {
+      console.log(room);
 
-    _createClass(Chat, [{
-        key: "sendMessage",
-        value: function sendMessage(room, msg, user) {
-            var date = new Date();
-            this.pushData('/messages/room/' + room, {
-                message: msg,
-                displayName: user,
-                // this really need to be rewritten
-                time: (date.getDay() >= 10 ? date.getDay() : "0" + date.getDay()) + "/" + (date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) + " - " + date.getFullYear() + " | " + (date.getHours() >= 10 ? date.getHours() : "0" + date.getHours()) + ":" + (date.getMinutes() >= 10 ? date.getMinutes() : "0" + date.getMinutes()),
-                timestamp: new Date()
-            });
+      if (!hasRoom()) {
+        roomsBeenIn[room] = room;
+        this.getData("/messages/room/" + room, "child_added", function (response) {
+          console.log(response);
+          func("\n                    <div class=\"new-message\">\n                    <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                    <p>" + response["message"] + "</p>\n                    </div>\n                ");
+        });
+      } else {
+        this.getDataOnce("/messages/room/" + room, "value", function (response) {
+          console.log(response);
+          func("\n                    <div class=\"new-message\">\n                        <span><h3>" + response["displayName"] + "</h3></span><span><h5> | " + response["time"] + "</h5></span>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+        });
+      }
+
+      function hasRoom() {
+        for (var i = 0; i < Object.keys(roomsBeenIn).length; i++) {
+          if (Object.keys(roomsBeenIn)[i] === room) {
+            return true;
+          }
         }
-    }, {
-        key: "render",
-        value: function render(room, func) {
-            console.log(room);
+        return false;
+      }
+    }
+  }]);
 
-            if (!hasRoom()) {
-                roomsBeenIn[room] = room;
-                this.getData('/messages/room/' + room, 'child_added', function (response) {
-                    console.log(response);
-                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
-                });
-            } else {
-                this.getDataOnce('/messages/room/' + room, 'value', function (response) {
-                    console.log(response);
-                    func("\n                    <div>\n                        <h3>" + response["displayName"] + " | " + response["time"] + "</h3>\n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
-                });
-            }
-
-            function hasRoom() {
-                for (var i = 0; i < Object.keys(roomsBeenIn).length; i++) {
-                    if (Object.keys(roomsBeenIn)[i] === room) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-    }]);
-
-    return Chat;
+  return Chat;
 }(_FirebaseRepository3.default);
 
 exports.default = Chat;
@@ -14750,6 +14771,9 @@ var Login = function (_FirebaseRepository) {
       document.getElementById("logout").style.display = "none";
       document.getElementById("nav").style.display = "none";
       document.getElementById("loggedInUser").style.display = "none";
+      document.getElementById("chat").style.display = "none";
+      document.getElementById("style-chat").style.display = "none";
+      document.getElementById("chat-navigation").style.display = "none";
       console.log("Logged out");
     }
   }, {
@@ -30102,6 +30126,11 @@ function sendBtn() {
   var message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
+    setTimeout(function () {
+      var emptyInput = document.getElementById("message");
+      emptyInput.value = "";
+      emptyInput.reset(); //varför töms inte input fätet?? har testat message= "";
+    }, 1000);
   } else if (message.length > 0 && registrering.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }

@@ -50,12 +50,12 @@ function openRoom(chat) {
 function sendBtn() {
   let email = document.getElementById("email");
   let registrering = document.getElementById("registeremail");
-  let chat = new Chat();  
+  let chat = new Chat();
   let message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-  }
-  else if (message.length > 0 && registrering.value) {
+    message = "";
+  } else if (message.length > 0 && registrering.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
 }
