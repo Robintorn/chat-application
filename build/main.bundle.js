@@ -30129,11 +30129,12 @@ function sendBtn() {
   var email = document.getElementById("email");
   var registrering = document.getElementById("registeremail");
   var chat = new _chat2.default();
-  var emptyMessage = document.querySelectorAll(".p-message").value;
   var message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    emptyMessage = "";
+    message = ""; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
+    var messageList = document.querySelectorAll(".new-message");
+    messageList[0].scrollBottom = messageList[0].scrollHeight; // försöker scrolla till botten för att se nya meddelandet
   } else if (message.length > 0 && registrering.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
@@ -30190,6 +30191,31 @@ showChatroom.addEventListener("click", function () {
 });
 
 /** */
+
+onlineList = document.getElementById("online-users");
+
+var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
+var userRef = listRef.push();
+
+//add online user to presence list
+
+var presenceRef = new Firebase("https://chatapp-151d0.firebaseio.com/.info/connected");
+presenceRef.on("value", function (snap) {
+  if (snap.val()) {
+    userRef.set(true);
+    //remove user from preference list when disconnected by using the remove() method
+
+    userRef.onDisconnect().remove();
+  }
+});
+
+//list our objects in presence list as online users in our   element
+
+listRef.on("value", function (snap) {
+  onlineList.text(snap.numChildren());
+});
+
+/*** */
 
 /***/ }
 /******/ ]);
