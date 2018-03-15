@@ -457,7 +457,7 @@ input:focus {
   align-items: flex-end;
 }
 #message {
-  width: 30%;
+  width: 50%;
   height: auto;
   border-radius: 2%;
   border: solid white 1px;
@@ -468,8 +468,7 @@ input:focus {
   border-left: 0.5px solid white;
   margin: 20px;
   padding-left: 15px;
-  min-width: 10%;
-  max-width: 70%;
+  max-width: 30%;
 }
 .p-message {
   border-radius: 10px;
