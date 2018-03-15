@@ -10,6 +10,7 @@ class Login extends FirebaseRepository {
       console.log("DEBUG", user);
       if (user) {
         console.log("Im here 2");
+
         document.getElementById("introduktion").style.display = "block";
         document.getElementById("registration/login").style.display = "none";
         document.getElementById("animation").style.display = "block";
@@ -46,3 +47,5 @@ class Login extends FirebaseRepository {
 }
 
 export default Login;
+
+/**/

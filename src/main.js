@@ -1,8 +1,10 @@
 import Chat from "./logic/chat";
 import Register from "./logic/register";
 import Login from "./logic/login";
+// import LoggedIn from "./logic/loggedIn";
 import FirebaseRepo from "./database/FirebaseRepository";
 
+/**/
 let chatNav = document.getElementById("chat-navigation");
 let replyBox = document.getElementById("reply");
 
@@ -109,3 +111,5 @@ showChatroom.addEventListener("click", function() {
   document.getElementById("chat").style.display = "block";
   document.getElementById("introduktion").style.display = "none";
 });
+
+/** */

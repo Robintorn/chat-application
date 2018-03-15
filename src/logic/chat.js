@@ -49,7 +49,7 @@ class Chat extends FirebaseRepository {
         func(`
                     <div class="new-message">
                     <span>${response["displayName"]}| ${response["time"]}</span>
-                     <p>${response["message"]}</p>
+                     <p class="p-message">${response["message"]}</p>
                     </div>
                 `);
       });
@@ -60,7 +60,7 @@ class Chat extends FirebaseRepository {
                     <div class="new-message">
                     <span>${response["displayName"]}| ${response["time"]}</span>
                     
-                        <p>${response["message"]}</p>
+                        <p class="p-message">${response["message"]}</p>
                     </div>
                 `);
       });

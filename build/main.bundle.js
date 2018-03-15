@@ -14680,12 +14680,12 @@ var Chat = function (_FirebaseRepository) {
         roomsBeenIn[room] = room;
         this.getData("/messages/room/" + room, "child_added", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                    <span>>" + response["displayName"] + "| " + response["time"] + "</span>\n                     <p>" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                     <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
         });
       } else {
         this.getDataOnce("/messages/room/" + room, "value", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                    \n                        <p>" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                    \n                        <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
         });
       }
 
@@ -14746,6 +14746,7 @@ var Login = function (_FirebaseRepository) {
         console.log("DEBUG", user);
         if (user) {
           console.log("Im here 2");
+
           document.getElementById("introduktion").style.display = "block";
           document.getElementById("registration/login").style.display = "none";
           document.getElementById("animation").style.display = "block";
@@ -14787,6 +14788,8 @@ var Login = function (_FirebaseRepository) {
 }(_FirebaseRepository3.default);
 
 exports.default = Login;
+
+/**/
 
 /***/ },
 /* 87 */
@@ -30077,7 +30080,10 @@ var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**/
 var chatNav = document.getElementById("chat-navigation");
+// import LoggedIn from "./logic/loggedIn";
+
 var replyBox = document.getElementById("reply");
 
 var chatRoomUserIsIn = {};
@@ -30123,10 +30129,11 @@ function sendBtn() {
   var email = document.getElementById("email");
   var registrering = document.getElementById("registeremail");
   var chat = new _chat2.default();
+  var emptyMessage = document.querySelectorAll(".p-message").value;
   var message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    message = "";
+    emptyMessage = "";
   } else if (message.length > 0 && registrering.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
@@ -30181,6 +30188,8 @@ showChatroom.addEventListener("click", function () {
   document.getElementById("chat").style.display = "block";
   document.getElementById("introduktion").style.display = "none";
 });
+
+/** */
 
 /***/ }
 /******/ ]);
