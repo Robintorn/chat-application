@@ -115,7 +115,8 @@ showChatroom.addEventListener("click", function() {
 
 /** */
 /**/
-/*** */
+/*** varför blir Firebase undefined?????*/
+
 var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
 var userRef = listRef.push();
 
@@ -135,9 +136,8 @@ presenceRef.on("value", function(snap) {
 
 //list our objects in presence list as online users in our   element
 var onlineList;
+onlineList = document.getElementById("online-users");
 listRef.on("value", function(snap) {
-  onlineList = document.getElementById("online-users");
-
   onlineList.text(snap.numChildren());
 });
 
