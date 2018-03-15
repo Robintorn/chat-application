@@ -3,7 +3,8 @@ import Register from "./logic/register";
 import Login from "./logic/login";
 import FirebaseRepo from "./database/FirebaseRepository";
 
-.numChildren()let chatNav = document.getElementById("chat-navigation");
+/**/
+let chatNav = document.getElementById("chat-navigation");
 let replyBox = document.getElementById("reply");
 
 let chatRoomUserIsIn = {};
@@ -113,9 +114,8 @@ showChatroom.addEventListener("click", function() {
 });
 
 /** */
-
-onlineList = document.getElementById("online-users");
-
+/**/
+/*** */
 var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
 var userRef = listRef.push();
 
@@ -134,8 +134,10 @@ presenceRef.on("value", function(snap) {
 });
 
 //list our objects in presence list as online users in our   element
-
+var onlineList;
 listRef.on("value", function(snap) {
+  onlineList = document.getElementById("online-users");
+
   onlineList.text(snap.numChildren());
 });
 

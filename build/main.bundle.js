@@ -30082,8 +30082,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 /**/
 var chatNav = document.getElementById("chat-navigation");
-// import LoggedIn from "./logic/loggedIn";
-
 var replyBox = document.getElementById("reply");
 
 var chatRoomUserIsIn = {};
@@ -30191,9 +30189,8 @@ showChatroom.addEventListener("click", function () {
 });
 
 /** */
-
-onlineList = document.getElementById("online-users");
-
+/**/
+/*** */
 var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
 var userRef = listRef.push();
 
@@ -30210,9 +30207,11 @@ presenceRef.on("value", function (snap) {
 });
 
 //list our objects in presence list as online users in our   element
-
+var onlineList;
 listRef.on("value", function (snap) {
-  onlineList.text(snap.numChildren());
+  onlineList = document.getElementById("online-users");
+
+  onlineList.html(snap.numChildren());
 });
 
 /*** */
