@@ -77,8 +77,6 @@ login.addEventListener("click", () => {
   let password = document.getElementById("password");
   let login = new Login();
   login.login(email.value, password.value);
-  let presence = new Presence();
-  presence.presence();
 });
 
 loggit.addEventListener("click", () => {

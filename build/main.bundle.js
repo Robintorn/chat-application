@@ -14819,9 +14819,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var listRef;
-var userRef;
-var presenceRef;
+// var listRef;
+// var userRef;
+// var presenceRef;
 
 var Presence = function (_FirebaseRepository) {
   _inherits(Presence, _FirebaseRepository);
@@ -14839,33 +14839,27 @@ var Presence = function (_FirebaseRepository) {
   _createClass(Presence, [{
     key: "presence",
     value: function presence() {
-      var _this2 = this;
+      var listRef = this.database("https://chatapp-151d0.firebaseio.com/presence/");
+      var userRef = listRef.push();
 
-      this.auth("createUserWithEmailPass", email, password, function (user) {
-        if (user) {
-          listRef = _this2.database("https://chatapp-151d0.firebaseio.com/presence/");
-          userRef = listRef.push();
+      //add online user to presence list
 
-          //add online user to presence list
+      var presenceRef = this.database("https://chatapp-151d0.firebaseio.com/.info/connected");
 
-          presenceRef = _this2.database("https://chatapp-151d0.firebaseio.com/.info/connected");
+      presenceRef.on("value", function (snap) {
+        if (snap.val()) {
+          userRef.set(true);
+          //remove user from preference list when disconnected by using the remove() method
 
-          presenceRef.on("value", function (snap) {
-            if (snap.val()) {
-              userRef.set(true);
-              //remove user from preference list when disconnected by using the remove() method
-
-              userRef.onDisconnect().remove();
-            }
-          });
-          console.log("presence");
-          //list our objects in presence list as online users in our   element
-          var onlineList;
-          onlineList = document.getElementById("online-users");
-          listRef.on("value", function (snap) {
-            onlineList.text(snap.numChildren());
-          });
+          userRef.onDisconnect().remove();
         }
+      });
+      console.log("presence");
+      //list our objects in presence list as online users in our   element
+      var onlineList;
+      onlineList = document.getElementById("online-users");
+      listRef.on("value", function (snap) {
+        onlineList.text(snap.numChildren());
       });
     }
   }]);
@@ -30241,8 +30235,6 @@ login.addEventListener("click", function () {
   var password = document.getElementById("password");
   var login = new _login2.default();
   login.login(email.value, password.value);
-  var presence = new _presence2.default();
-  presence.presence(user);
 });
 
 loggit.addEventListener("click", function () {
@@ -30257,7 +30249,7 @@ signup.addEventListener("click", function () {
   var register = new _register2.default();
   register.register(email.value, password.value);
   var presence = new _presence2.default();
-  presence.presence(user);
+  presence.presence();
 });
 
 logout.addEventListener("click", function () {
