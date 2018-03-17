@@ -6,7 +6,7 @@ class Presence extends FirebaseRepository {
   }
 
   presence() {
-    var myConnectionsRef = this.database().ref("users/*/connections");
+    var myConnectionsRef = this.database().ref("users//connections");
 
     var connectedRef = this.database().ref(".info/connected");
     connectedRef.on("value", function(snap) {

@@ -14819,10 +14819,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// var listRef;
-// var userRef;
-// var presenceRef;
-
 var Presence = function (_FirebaseRepository) {
   _inherits(Presence, _FirebaseRepository);
 
@@ -14831,15 +14827,11 @@ var Presence = function (_FirebaseRepository) {
 
     return _possibleConstructorReturn(this, (Presence.__proto__ || Object.getPrototypeOf(Presence)).call(this));
   }
-  /*/
-  /**/
-  /*** varför funkar det inte?????*/
-
 
   _createClass(Presence, [{
     key: "presence",
     value: function presence() {
-      var myConnectionsRef = this.database().ref("users/*/connections");
+      var myConnectionsRef = this.database().ref("users//connections");
 
       var connectedRef = this.database().ref(".info/connected");
       connectedRef.on("value", function (snap) {
@@ -14851,33 +14843,12 @@ var Presence = function (_FirebaseRepository) {
           });
           var con = myConnectionsRef.push();
 
-          // When I disconnect, remove this device
-          con.onDisconnect().remove();
+          con.onDisconnect().remove(); // When I disconnect, remove this device
 
-          // Add this device to my connections list
+          con.set(true); // Add this device to my connections list
           // this value could contain info about the device or a timestamp too
-          con.set(true);
-
-          // When I disconnect, update the last time I was seen online
         }
       });
-
-      // var amOnline = this.database(
-      //   "https://chatapp-151d0.firebaseio.com/.info/connected"
-      // );
-      // var userRef = this.database(
-      //   "https://chatapp-151d0.firebaseio.com/presence/" + uid
-      // );
-      // amOnline.on("value", function(snapshot) {
-      //   if (snapshot.val()) {
-      //     userRef.onDisconnect().remove();
-      //     userRef.set(true);
-
-      //     var onlineList;
-      //     onlineList = document.getElementById("online-users");
-      //     onlineList.innerHTML = `<p>${userRef}</p>`;
-      //   }
-      // });
     }
   }]);
 
@@ -14886,9 +14857,38 @@ var Presence = function (_FirebaseRepository) {
 
 exports.default = Presence;
 
-/**/
+/******************** alternative code 1 ******************/
 
-/* alternative code */
+// import FirebaseRepository from "../database/FirebaseRepository";
+
+// class Presence extends FirebaseRepository {
+//   constructor() {
+//     super();
+//   }
+
+//   presence() {
+
+// var amOnline = this.database(
+//   "https://chatapp-151d0.firebaseio.com/.info/connected"
+// );
+// var userRef = this.database(
+//   "https://chatapp-151d0.firebaseio.com/presence/" + uid
+// );
+// amOnline.on("value", function(snapshot) {
+//   if (snapshot.val()) {
+//     userRef.onDisconnect().remove();
+//     userRef.set(true);
+
+//     var onlineList;
+//     onlineList = document.getElementById("online-users");
+//     onlineList.innerHTML = `<p>${userRef}</p>`;
+//   }
+// });
+//   }
+// }
+
+/******************** alternative code 2 ******************/
+
 // import FirebaseRepository from "../database/FirebaseRepository";
 // // var listRef;
 // // var userRef;
