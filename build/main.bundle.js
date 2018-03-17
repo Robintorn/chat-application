@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 170);
+/******/ 	return __webpack_require__(__webpack_require__.s = 171);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -96,25 +96,25 @@ exports.base64Decode = crypt_1.base64Decode;
 exports.base64Encode = crypt_1.base64Encode;
 var constants_1 = __webpack_require__(41);
 exports.CONSTANTS = constants_1.CONSTANTS;
-var deepCopy_1 = __webpack_require__(152);
+var deepCopy_1 = __webpack_require__(153);
 exports.deepCopy = deepCopy_1.deepCopy;
 exports.deepExtend = deepCopy_1.deepExtend;
 exports.patchProperty = deepCopy_1.patchProperty;
-var deferred_1 = __webpack_require__(153);
+var deferred_1 = __webpack_require__(154);
 exports.Deferred = deferred_1.Deferred;
-var environment_1 = __webpack_require__(154);
+var environment_1 = __webpack_require__(155);
 exports.getUA = environment_1.getUA;
 exports.isMobileCordova = environment_1.isMobileCordova;
 exports.isNodeSdk = environment_1.isNodeSdk;
 exports.isReactNative = environment_1.isReactNative;
-var errors_1 = __webpack_require__(155);
+var errors_1 = __webpack_require__(156);
 exports.ErrorFactory = errors_1.ErrorFactory;
 exports.FirebaseError = errors_1.FirebaseError;
 exports.patchCapture = errors_1.patchCapture;
 var json_1 = __webpack_require__(81);
 exports.jsonEval = json_1.jsonEval;
 exports.stringify = json_1.stringify;
-var jwt_1 = __webpack_require__(157);
+var jwt_1 = __webpack_require__(158);
 exports.decode = jwt_1.decode;
 exports.isAdmin = jwt_1.isAdmin;
 exports.issuedAtTime = jwt_1.issuedAtTime;
@@ -135,21 +135,21 @@ exports.isEmpty = obj_1.isEmpty;
 exports.isNonNullObject = obj_1.isNonNullObject;
 exports.map = obj_1.map;
 exports.safeGet = obj_1.safeGet;
-var query_1 = __webpack_require__(158);
+var query_1 = __webpack_require__(159);
 exports.querystring = query_1.querystring;
 exports.querystringDecode = query_1.querystringDecode;
-var sha1_1 = __webpack_require__(159);
+var sha1_1 = __webpack_require__(160);
 exports.Sha1 = sha1_1.Sha1;
-var subscribe_1 = __webpack_require__(160);
+var subscribe_1 = __webpack_require__(161);
 exports.async = subscribe_1.async;
 exports.createSubscribe = subscribe_1.createSubscribe;
-var validation_1 = __webpack_require__(162);
+var validation_1 = __webpack_require__(163);
 exports.errorPrefix = validation_1.errorPrefix;
 exports.validateArgCount = validation_1.validateArgCount;
 exports.validateCallback = validation_1.validateCallback;
 exports.validateContextObject = validation_1.validateContextObject;
 exports.validateNamespace = validation_1.validateNamespace;
-var utf8_1 = __webpack_require__(161);
+var utf8_1 = __webpack_require__(162);
 exports.stringLength = utf8_1.stringLength;
 exports.stringToByteArray = utf8_1.stringToByteArray;
 
@@ -1515,7 +1515,7 @@ var SortedMap_1 = __webpack_require__(23);
 var Node_1 = __webpack_require__(6);
 var snap_1 = __webpack_require__(57);
 var PriorityIndex_1 = __webpack_require__(4);
-var KeyIndex_1 = __webpack_require__(16);
+var KeyIndex_1 = __webpack_require__(17);
 var IndexMap_1 = __webpack_require__(52);
 var LeafNode_1 = __webpack_require__(20);
 var comparators_1 = __webpack_require__(54);
@@ -2319,7 +2319,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.firebase = undefined;
 
-var _firebaseApp = __webpack_require__(88);
+var _firebaseApp = __webpack_require__(89);
 
 var firebase = exports.firebase = (0, _firebaseApp.createFirebaseNamespace)(); /**
                                                                                 * Copyright 2017 Google Inc.
@@ -2993,6 +2993,215 @@ function clone(obj) {
 
 "use strict";
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _firebase = __webpack_require__(167);
+
+var firebase = _interopRequireWildcard(_firebase);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _class = function () {
+  function _class() {
+    _classCallCheck(this, _class);
+  }
+
+  _createClass(_class, [{
+    key: "database",
+    value: function database() {
+      var _this = this;
+
+      try {
+        firebase.initializeApp(this.config);
+      } catch (err) {
+        // disable multiple implementations (enables hot-reloading)
+        if (!/already exists/.test(err.message)) {
+          console.error(err);
+          // Try to solve the error if there are any.
+          firebase.app().delete().then(function () {
+            console.warn("reinitializing firebase app");
+            return firebase.initializeApp(_this.config);
+          });
+        }
+      }
+      return firebase.database();
+    }
+  }, {
+    key: "getData",
+    value: function getData(urlPointer, event, func) {
+      this.database().ref(urlPointer).on(event, function (snapshot) {
+        func(snapshot.val());
+      }, function (err) {
+        // we can't save the user this time, as this is a super generic method.
+        console.error(err);
+      });
+    }
+  }, {
+    key: "getDataOnce",
+    value: function getDataOnce(urlPointer, event, func) {
+      this.database().ref(urlPointer).once(event, function (snapshot) {
+        var obj = snapshot.val();
+        for (var curr in snapshot.val()) {
+          if (obj.hasOwnProperty(curr)) {
+            func(obj[curr]);
+          }
+        }
+      }, function (err) {
+        console.error(err);
+      });
+    }
+
+    // Be careful on using post on data that already exists.
+
+  }, {
+    key: "postData",
+    value: function postData(urlPointer, child, obj) {
+      this.database().ref(urlPointer).child(child).set(obj, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Post completed");
+        }
+      });
+    }
+  }, {
+    key: "pushData",
+    value: function pushData(urlPointer, obj) {
+      this.database().ref(urlPointer).push(obj, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Push completed");
+        }
+      });
+    }
+  }, {
+    key: "updateData",
+    value: function updateData(urlPointer, child, updateRow) {
+      // Update row {"nickname" : "Jeppan"}
+      this.database().ref(urlPointer).child(child).update(updateRow, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log("Update completed");
+        }
+      });
+    }
+
+    // if using signing in with github, enter null as parameter.
+
+  }, {
+    key: "auth",
+    value: function auth(type, email, password, func) {
+      this.database();
+      switch (type) {
+        case "createUserWithEmailPass":
+          {
+            firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
+              console.error(err);
+              var message = document.getElementById("registermessage2");
+              message.style.display = "block";
+              message.innerHTML = err.message;
+              document.getElementById("logout").style.display = "none";
+              setTimeout(function () {
+                message.style.display = "none";
+              }, 3000);
+            });
+            break;
+          }
+
+        case "signInUserWithEmailPass":
+          {
+            firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
+              console.error(err);
+              console.log("Im here");
+              document.getElementById("introduktion").style.display = "none";
+              var message = document.getElementById("registermessage1");
+              message.style.display = "block";
+              message.innerHTML = err.message;
+              setTimeout(function () {
+                message.style.display = "none";
+              }, 3000);
+            });
+            break;
+          }
+
+        case "signInWithGithub":
+          {
+            var provider = new firebase.auth.GithubAuthProvider();
+            firebase.auth().signInWithPopup(provider).then(function (result) {
+              /*
+                      userCredentials = {
+                          "token": result.credential.accessToken,
+                          "user": result.user
+                      };
+                      */
+            }).catch(function (err) {
+              console.error(err);
+            });
+            break;
+          }
+
+        case "signOut":
+          {
+            firebase.auth().signOut().catch(function (err) {
+              console.error(err);
+            });
+          }
+      }
+
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          document.cookie = "displayName=" + user.displayName + ";" + "email=" + user.email + ";" + "img_url=" + user.photoURL + ";" + "uid=" + user.uid + ";";
+
+          if (func !== null) {
+            func({
+              displayName: user.displayName,
+              email: user.email,
+              img_url: user.photoURL,
+              uid: user.uid
+            });
+          }
+        }
+      });
+    }
+  }, {
+    key: "config",
+    get: function get() {
+      return {
+        apiKey: "AIzaSyC99W8Q0Ljie57VFr4lPpAB8-uZlJDQ0dY",
+        authDomain: "chatapp-151d0.firebaseapp.com",
+        databaseURL: "https://chatapp-151d0.firebaseio.com",
+        projectId: "chatapp-151d0",
+        storageBucket: "chatapp-151d0.appspot.com",
+        messagingSenderId: "105631242194"
+      };
+
+      firebase.initializeApp(config);
+
+      // Få en referens till databasen.
+      var database = firebase.database();
+    }
+  }]);
+
+  return _class;
+}();
+
+exports.default = _class;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
 /**
  * Copyright 2017 Google Inc.
  *
@@ -3089,7 +3298,7 @@ exports.KEY_INDEX = new KeyIndex();
 //# sourceMappingURL=KeyIndex.js.map
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3196,211 +3405,6 @@ PriorityIndex_1.setNodeFromJSON(nodeFromJSON);
 //# sourceMappingURL=nodeFromJSON.js.map
 
 /***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _firebase = __webpack_require__(166);
-
-var firebase = _interopRequireWildcard(_firebase);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _class = function () {
-    function _class() {
-        _classCallCheck(this, _class);
-    }
-
-    _createClass(_class, [{
-        key: "database",
-        value: function database() {
-            var _this = this;
-
-            try {
-                firebase.initializeApp(this.config);
-            } catch (err) {
-                // disable multiple implementations (enables hot-reloading)
-                if (!/already exists/.test(err.message)) {
-                    console.error(err);
-                    // Try to solve the error if there are any.
-                    firebase.app().delete().then(function () {
-                        console.warn("reinitializing firebase app");
-                        return firebase.initializeApp(_this.config);
-                    });
-                }
-            }
-            return firebase.database();
-        }
-    }, {
-        key: "getData",
-        value: function getData(urlPointer, event, func) {
-            this.database().ref(urlPointer).on(event, function (snapshot) {
-                func(snapshot.val());
-            }, function (err) {
-                // we can't save the user this time, as this is a super generic method.
-                console.error(err);
-            });
-        }
-    }, {
-        key: "getDataOnce",
-        value: function getDataOnce(urlPointer, event, func) {
-            this.database().ref(urlPointer).once(event, function (snapshot) {
-                var obj = snapshot.val();
-                for (var curr in snapshot.val()) {
-                    if (obj.hasOwnProperty(curr)) {
-                        func(obj[curr]);
-                    }
-                }
-            }, function (err) {
-                console.error(err);
-            });
-        }
-
-        // Be careful on using post on data that already exists.
-
-    }, {
-        key: "postData",
-        value: function postData(urlPointer, child, obj) {
-            this.database().ref(urlPointer).child(child).set(obj, function (err) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log("Post completed");
-                }
-            });
-        }
-    }, {
-        key: "pushData",
-        value: function pushData(urlPointer, obj) {
-            this.database().ref(urlPointer).push(obj, function (err) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log("Push completed");
-                }
-            });
-        }
-    }, {
-        key: "updateData",
-        value: function updateData(urlPointer, child, updateRow) {
-            // Update row {"nickname" : "Jeppan"}
-            this.database().ref(urlPointer).child(child).update(updateRow, function (err) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log("Update completed");
-                }
-            });
-        }
-
-        // if using signing in with github, enter null as parameter.
-
-    }, {
-        key: "auth",
-        value: function auth(type, email, password, func) {
-            this.database();
-            switch (type) {
-                case "createUserWithEmailPass":
-                    {
-                        firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (err) {
-                            console.error(err);
-                            var message = document.getElementById("registermessage2");
-                            message.style.display = "block";
-                            message.innerHTML = err.message;
-                            document.getElementById("logout").style.display = "none";
-                            setTimeout(function () {
-                                message.style.display = "none";
-                            }, 3000);
-                        });
-                        break;
-                    }
-
-                case "signInUserWithEmailPass":
-                    {
-                        firebase.auth().signInWithEmailAndPassword(email, password).catch(function (err) {
-                            console.error(err);
-                            console.log("Im here");
-                            document.getElementById("introduktion").style.display = "none";
-                            var message = document.getElementById("registermessage1");
-                            message.style.display = "block";
-                            message.innerHTML = err.message;
-                            setTimeout(function () {
-                                message.style.display = "none";
-                            }, 3000);
-                        });
-                        break;
-                    }
-
-                case "signInWithGithub":
-                    {
-                        var provider = new firebase.auth.GithubAuthProvider();
-                        firebase.auth().signInWithPopup(provider).then(function (result) {
-                            /*
-                            userCredentials = {
-                                "token": result.credential.accessToken,
-                                "user": result.user
-                            };
-                            */
-                        }).catch(function (err) {
-                            console.error(err);
-                        });
-                        break;
-                    }
-
-                case "signOut":
-                    {
-                        firebase.auth().signOut().catch(function (err) {
-                            console.error(err);
-                        });
-                    }
-
-            }
-
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    document.cookie = "displayName=" + user.displayName + ";" + "email=" + user.email + ";" + "img_url=" + user.photoURL + ";" + "uid=" + user.uid + ";";
-
-                    if (func !== null) {
-                        func({
-                            "displayName": user.displayName,
-                            "email": user.email,
-                            "img_url": user.photoURL,
-                            "uid": user.uid
-                        });
-                    }
-                }
-            });
-        }
-    }, {
-        key: "config",
-        get: function get() {
-            return {
-                apiKey: "AIzaSyC99W8Q0Ljie57VFr4lPpAB8-uZlJDQ0dY",
-                authDomain: "chatapp-151d0.firebaseapp.com",
-                databaseURL: "https://chatapp-151d0.firebaseio.com",
-                projectId: "chatapp-151d0",
-                storageBucket: "chatapp-151d0.appspot.com",
-                messagingSenderId: "105631242194"
-            };
-        }
-    }]);
-
-    return _class;
-}();
-
-exports.default = _class;
-
-/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3426,21 +3430,21 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var ServerValues_1 = __webpack_require__(61);
-var nodeFromJSON_1 = __webpack_require__(17);
+var nodeFromJSON_1 = __webpack_require__(18);
 var Path_1 = __webpack_require__(2);
 var SparseSnapshotTree_1 = __webpack_require__(49);
-var SyncTree_1 = __webpack_require__(99);
-var SnapshotHolder_1 = __webpack_require__(98);
+var SyncTree_1 = __webpack_require__(100);
+var SnapshotHolder_1 = __webpack_require__(99);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(1);
 var util_3 = __webpack_require__(0);
-var AuthTokenProvider_1 = __webpack_require__(94);
+var AuthTokenProvider_1 = __webpack_require__(95);
 var StatsManager_1 = __webpack_require__(31);
-var StatsReporter_1 = __webpack_require__(105);
+var StatsReporter_1 = __webpack_require__(106);
 var StatsListener_1 = __webpack_require__(58);
-var EventQueue_1 = __webpack_require__(116);
+var EventQueue_1 = __webpack_require__(117);
 var PersistentConnection_1 = __webpack_require__(46);
-var ReadonlyRestClient_1 = __webpack_require__(96);
+var ReadonlyRestClient_1 = __webpack_require__(97);
 var Database_1 = __webpack_require__(43);
 var INTERRUPT_REASON = 'repo_interrupt';
 /**
@@ -4267,8 +4271,8 @@ exports.Index = Index;
  */
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var DOMStorageWrapper_1 = __webpack_require__(106);
-var MemoryStorage_1 = __webpack_require__(107);
+var DOMStorageWrapper_1 = __webpack_require__(107);
+var MemoryStorage_1 = __webpack_require__(108);
 /**
  * Helper to create a DOMStorageWrapper or else fall back to MemoryStorage.
  * TODO: Once MemoryStorage and DOMStorageWrapper have a shared interface this method annotation should change
@@ -5438,13 +5442,13 @@ exports.DataSnapshot = DataSnapshot;
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(3);
 var onDisconnect_1 = __webpack_require__(45);
-var TransactionResult_1 = __webpack_require__(91);
+var TransactionResult_1 = __webpack_require__(92);
 var util_1 = __webpack_require__(1);
-var NextPushId_1 = __webpack_require__(108);
+var NextPushId_1 = __webpack_require__(109);
 var Query_1 = __webpack_require__(44);
 var Repo_1 = __webpack_require__(19);
 var Path_1 = __webpack_require__(2);
-var QueryParams_1 = __webpack_require__(118);
+var QueryParams_1 = __webpack_require__(119);
 var validation_1 = __webpack_require__(11);
 var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
@@ -5730,7 +5734,7 @@ var Repo_1 = __webpack_require__(19);
 var util_2 = __webpack_require__(1);
 var parser_1 = __webpack_require__(62);
 var validation_1 = __webpack_require__(11);
-__webpack_require__(97);
+__webpack_require__(98);
 /** @const {string} */
 var DATABASE_URL_OPTION = 'databaseURL';
 var _staticInstance;
@@ -5862,7 +5866,7 @@ exports.RepoManager = RepoManager;
  */
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var StatsCollection_1 = __webpack_require__(104);
+var StatsCollection_1 = __webpack_require__(105);
 var StatsManager = /** @class */function () {
     function StatsManager() {}
     StatsManager.getCollection = function (repoInfo) {
@@ -6682,7 +6686,7 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(142);
+var _json = __webpack_require__(143);
 
 var json = _interopRequireWildcard(_json);
 
@@ -7432,7 +7436,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
-var KeyIndex_1 = __webpack_require__(16);
+var KeyIndex_1 = __webpack_require__(17);
 var PriorityIndex_1 = __webpack_require__(4);
 var ValueIndex_1 = __webpack_require__(56);
 var PathIndex_1 = __webpack_require__(55);
@@ -7440,7 +7444,7 @@ var util_2 = __webpack_require__(1);
 var Path_1 = __webpack_require__(2);
 var validation_1 = __webpack_require__(11);
 var util_3 = __webpack_require__(0);
-var EventRegistration_1 = __webpack_require__(117);
+var EventRegistration_1 = __webpack_require__(118);
 var util_4 = __webpack_require__(0);
 var __referenceConstructor;
 /**
@@ -8044,8 +8048,8 @@ var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
 var util_4 = __webpack_require__(1);
 var Path_1 = __webpack_require__(2);
-var VisibilityMonitor_1 = __webpack_require__(111);
-var OnlineMonitor_1 = __webpack_require__(109);
+var VisibilityMonitor_1 = __webpack_require__(112);
+var OnlineMonitor_1 = __webpack_require__(110);
 var util_5 = __webpack_require__(0);
 var Connection_1 = __webpack_require__(66);
 var util_6 = __webpack_require__(0);
@@ -9165,7 +9169,7 @@ var ChildrenNode_1 = __webpack_require__(5);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 var ViewCache_1 = __webpack_require__(63);
-var View_1 = __webpack_require__(119);
+var View_1 = __webpack_require__(120);
 var __referenceConstructor;
 /**
  * SyncPoint represents a single location in a SyncTree with 1 or more event registrations, meaning we need to
@@ -9460,7 +9464,7 @@ var childSet_1 = __webpack_require__(53);
 var util_2 = __webpack_require__(0);
 var Node_1 = __webpack_require__(6);
 var PriorityIndex_1 = __webpack_require__(4);
-var KeyIndex_1 = __webpack_require__(16);
+var KeyIndex_1 = __webpack_require__(17);
 var _defaultIndexMap;
 var fallbackObject = {};
 /**
@@ -9809,7 +9813,7 @@ var util_2 = __webpack_require__(1);
 var Index_1 = __webpack_require__(21);
 var ChildrenNode_1 = __webpack_require__(5);
 var Node_1 = __webpack_require__(6);
-var nodeFromJSON_1 = __webpack_require__(17);
+var nodeFromJSON_1 = __webpack_require__(18);
 /**
  * @param {!Path} indexPath
  * @constructor
@@ -9904,7 +9908,7 @@ var tslib_1 = __webpack_require__(3);
 var Index_1 = __webpack_require__(21);
 var Node_1 = __webpack_require__(6);
 var util_1 = __webpack_require__(1);
-var nodeFromJSON_1 = __webpack_require__(17);
+var nodeFromJSON_1 = __webpack_require__(18);
 /**
  * @constructor
  * @extends {Index}
@@ -10301,7 +10305,7 @@ var util_1 = __webpack_require__(0);
 var Path_1 = __webpack_require__(2);
 var SparseSnapshotTree_1 = __webpack_require__(49);
 var LeafNode_1 = __webpack_require__(20);
-var nodeFromJSON_1 = __webpack_require__(17);
+var nodeFromJSON_1 = __webpack_require__(18);
 var PriorityIndex_1 = __webpack_require__(4);
 /**
  * Generate placeholders for deferred values.
@@ -10817,7 +10821,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(1);
 var CountedSet_1 = __webpack_require__(59);
 var StatsManager_1 = __webpack_require__(31);
-var PacketReceiver_1 = __webpack_require__(123);
+var PacketReceiver_1 = __webpack_require__(124);
 var Constants_1 = __webpack_require__(25);
 var util_2 = __webpack_require__(0);
 var util_3 = __webpack_require__(0);
@@ -11408,7 +11412,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(1);
 var storage_1 = __webpack_require__(22);
 var Constants_1 = __webpack_require__(25);
-var TransportManager_1 = __webpack_require__(122);
+var TransportManager_1 = __webpack_require__(123);
 // Abort upgrade attempt if it takes longer than 60s.
 var UPGRADE_TIMEOUT = 60000;
 // For some transports (WebSockets), we need to "validate" the transport by exchanging a few requests and responses.
@@ -12230,11 +12234,11 @@ var _errors = __webpack_require__(12);
 
 var _errors2 = _interopRequireDefault(_errors);
 
-var _tokenDetailsModel = __webpack_require__(130);
+var _tokenDetailsModel = __webpack_require__(131);
 
 var _tokenDetailsModel2 = _interopRequireDefault(_tokenDetailsModel);
 
-var _vapidDetailsModel = __webpack_require__(131);
+var _vapidDetailsModel = __webpack_require__(132);
 
 var _vapidDetailsModel2 = _interopRequireDefault(_vapidDetailsModel);
 
@@ -12891,7 +12895,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FbsBlob = undefined;
 
-var _fs = __webpack_require__(141);
+var _fs = __webpack_require__(142);
 
 var fs = _interopRequireWildcard(_fs);
 
@@ -13139,7 +13143,7 @@ var _object = __webpack_require__(15);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(145);
+var _requestinfo = __webpack_require__(146);
 
 var _type = __webpack_require__(7);
 
@@ -13609,7 +13613,7 @@ var _type = __webpack_require__(7);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(150);
+var _task = __webpack_require__(151);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -14615,7 +14619,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _FirebaseRepository2 = __webpack_require__(18);
+var _FirebaseRepository2 = __webpack_require__(16);
 
 var _FirebaseRepository3 = _interopRequireDefault(_FirebaseRepository2);
 
@@ -14667,7 +14671,6 @@ var Chat = function (_FirebaseRepository) {
       this.pushData("/messages/room/" + room, {
         message: msg,
         displayName: user,
-        // this really need to be rewritten
         time: today
       });
     }
@@ -14680,12 +14683,12 @@ var Chat = function (_FirebaseRepository) {
         roomsBeenIn[room] = room;
         this.getData("/messages/room/" + room, "child_added", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                     <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + " | " + response["time"] + "</span>\n                     <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
         });
       } else {
         this.getDataOnce("/messages/room/" + room, "value", function (response) {
           console.log(response);
-          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + "| " + response["time"] + "</span>\n                    \n                        <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
+          func("\n                    <div class=\"new-message\">\n                    <span>" + response["displayName"] + " | " + response["time"] + "</span>\n                    \n                        <p class=\"p-message\">" + response["message"] + "</p>\n                    </div>\n                ");
         });
       }
 
@@ -14718,7 +14721,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _FirebaseRepository2 = __webpack_require__(18);
+var _FirebaseRepository2 = __webpack_require__(16);
 
 var _FirebaseRepository3 = _interopRequireDefault(_FirebaseRepository2);
 
@@ -14799,12 +14802,89 @@ exports.default = Login;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _FirebaseRepository2 = __webpack_require__(16);
+
+var _FirebaseRepository3 = _interopRequireDefault(_FirebaseRepository2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var listRef;
+var userRef;
+var presenceRef;
+
+var Presence = function (_FirebaseRepository) {
+  _inherits(Presence, _FirebaseRepository);
+
+  function Presence() {
+    _classCallCheck(this, Presence);
+
+    return _possibleConstructorReturn(this, (Presence.__proto__ || Object.getPrototypeOf(Presence)).call(this));
+  }
+  /** */
+  /**/
+  /*** varför blir Firebase undefined?????*/
+
+
+  _createClass(Presence, [{
+    key: "presence",
+    value: function presence() {
+      listRef = this.database("https://chatapp-151d0.firebaseio.com/presence/");
+      userRef = listRef.push();
+
+      //add online user to presence list
+
+      presenceRef = this.database("https://chatapp-151d0.firebaseio.com/.info/connected");
+
+      presenceRef.on("value", function (snap) {
+        if (snap.val()) {
+          userRef.set(true);
+          //remove user from preference list when disconnected by using the remove() method
+
+          userRef.onDisconnect().remove();
+        }
+      });
+
+      //list our objects in presence list as online users in our   element
+      var onlineList;
+      onlineList = document.getElementById("online-users");
+      listRef.on("value", function (snap) {
+        onlineList.text(snap.numChildren());
+      });
+    }
+  }]);
+
+  return Presence;
+}(_FirebaseRepository3.default);
+
+exports.default = Presence;
+
+/**/
+
+/***/ },
+/* 88 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _FirebaseRepository2 = __webpack_require__(18);
+var _FirebaseRepository2 = __webpack_require__(16);
 
 var _FirebaseRepository3 = _interopRequireDefault(_FirebaseRepository2);
 
@@ -14854,7 +14934,7 @@ var Register = function (_FirebaseRepository) {
 exports.default = Register;
 
 /***/ },
-/* 88 */
+/* 89 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15229,7 +15309,7 @@ var appErrors = new _util.ErrorFactory('app', 'Firebase', errors);
 //# sourceMappingURL=firebaseApp.js.map
 
 /***/ },
-/* 89 */
+/* 90 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18855,7 +18935,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(84)))
 
 /***/ },
-/* 90 */
+/* 91 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18887,8 +18967,8 @@ exports.Reference = Reference_1.Reference;
 var util_1 = __webpack_require__(1);
 exports.enableLogging = util_1.enableLogging;
 var RepoManager_1 = __webpack_require__(30);
-var INTERNAL = __webpack_require__(92);
-var TEST_ACCESS = __webpack_require__(93);
+var INTERNAL = __webpack_require__(93);
+var TEST_ACCESS = __webpack_require__(94);
 var util_2 = __webpack_require__(0);
 var ServerValue = Database_1.Database.ServerValue;
 exports.ServerValue = ServerValue;
@@ -18921,7 +19001,7 @@ exports.OnDisconnect = onDisconnect_1.OnDisconnect;
 //# sourceMappingURL=index.js.map
 
 /***/ },
-/* 91 */
+/* 92 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18969,7 +19049,7 @@ exports.TransactionResult = TransactionResult;
 //# sourceMappingURL=TransactionResult.js.map
 
 /***/ },
-/* 92 */
+/* 93 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19030,7 +19110,7 @@ exports.interceptServerData = function (ref, callback) {
 //# sourceMappingURL=internal.js.map
 
 /***/ },
-/* 93 */
+/* 94 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19119,7 +19199,7 @@ exports.forceRestClient = function (forceRestClient) {
 //# sourceMappingURL=test_access.js.map
 
 /***/ },
-/* 94 */
+/* 95 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19196,7 +19276,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 //# sourceMappingURL=AuthTokenProvider.js.map
 
 /***/ },
-/* 95 */
+/* 96 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19409,7 +19489,7 @@ exports.CompoundWrite = CompoundWrite;
 //# sourceMappingURL=CompoundWrite.js.map
 
 /***/ },
-/* 96 */
+/* 97 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19580,7 +19660,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 //# sourceMappingURL=ReadonlyRestClient.js.map
 
 /***/ },
-/* 97 */
+/* 98 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19608,13 +19688,13 @@ var util_1 = __webpack_require__(0);
 var Reference_1 = __webpack_require__(29);
 var DataSnapshot_1 = __webpack_require__(28);
 var Path_1 = __webpack_require__(2);
-var Tree_1 = __webpack_require__(110);
+var Tree_1 = __webpack_require__(111);
 var PriorityIndex_1 = __webpack_require__(4);
 var util_2 = __webpack_require__(1);
 var ServerValues_1 = __webpack_require__(61);
 var validation_1 = __webpack_require__(11);
 var util_3 = __webpack_require__(0);
-var nodeFromJSON_1 = __webpack_require__(17);
+var nodeFromJSON_1 = __webpack_require__(18);
 var ChildrenNode_1 = __webpack_require__(5);
 var Repo_1 = __webpack_require__(19);
 // TODO: This is pretty messy.  Ideally, a lot of this would move into FirebaseData, or a transaction-specific
@@ -20136,7 +20216,7 @@ Repo_1.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 //# sourceMappingURL=Repo_transaction.js.map
 
 /***/ },
-/* 98 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20181,7 +20261,7 @@ exports.SnapshotHolder = SnapshotHolder;
 //# sourceMappingURL=SnapshotHolder.js.map
 
 /***/ },
-/* 99 */
+/* 100 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20205,17 +20285,17 @@ exports.SnapshotHolder = SnapshotHolder;
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(1);
-var AckUserWrite_1 = __webpack_require__(101);
+var AckUserWrite_1 = __webpack_require__(102);
 var ChildrenNode_1 = __webpack_require__(5);
 var util_3 = __webpack_require__(0);
 var ImmutableTree_1 = __webpack_require__(32);
-var ListenComplete_1 = __webpack_require__(102);
-var Merge_1 = __webpack_require__(103);
+var ListenComplete_1 = __webpack_require__(103);
+var Merge_1 = __webpack_require__(104);
 var Operation_1 = __webpack_require__(10);
 var Overwrite_1 = __webpack_require__(51);
 var Path_1 = __webpack_require__(2);
 var SyncPoint_1 = __webpack_require__(50);
-var WriteTree_1 = __webpack_require__(100);
+var WriteTree_1 = __webpack_require__(101);
 /**
  * SyncTree is the central class for managing event callback registration, data caching, views
  * (query processing), and event generation.  There are typically two SyncTree instances for
@@ -20876,7 +20956,7 @@ exports.SyncTree = SyncTree;
 //# sourceMappingURL=SyncTree.js.map
 
 /***/ },
-/* 100 */
+/* 101 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20901,7 +20981,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 var Path_1 = __webpack_require__(2);
-var CompoundWrite_1 = __webpack_require__(95);
+var CompoundWrite_1 = __webpack_require__(96);
 var PriorityIndex_1 = __webpack_require__(4);
 var ChildrenNode_1 = __webpack_require__(5);
 /**
@@ -21477,7 +21557,7 @@ exports.WriteTreeRef = WriteTreeRef;
 //# sourceMappingURL=WriteTree.js.map
 
 /***/ },
-/* 101 */
+/* 102 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21544,7 +21624,7 @@ exports.AckUserWrite = AckUserWrite;
 //# sourceMappingURL=AckUserWrite.js.map
 
 /***/ },
-/* 102 */
+/* 103 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21595,7 +21675,7 @@ exports.ListenComplete = ListenComplete;
 //# sourceMappingURL=ListenComplete.js.map
 
 /***/ },
-/* 103 */
+/* 104 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21673,7 +21753,7 @@ exports.Merge = Merge;
 //# sourceMappingURL=Merge.js.map
 
 /***/ },
-/* 104 */
+/* 105 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21723,7 +21803,7 @@ exports.StatsCollection = StatsCollection;
 //# sourceMappingURL=StatsCollection.js.map
 
 /***/ },
-/* 105 */
+/* 106 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21797,7 +21877,7 @@ exports.StatsReporter = StatsReporter;
 //# sourceMappingURL=StatsReporter.js.map
 
 /***/ },
-/* 106 */
+/* 107 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21885,7 +21965,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 //# sourceMappingURL=DOMStorageWrapper.js.map
 
 /***/ },
-/* 107 */
+/* 108 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21942,7 +22022,7 @@ exports.MemoryStorage = MemoryStorage;
 //# sourceMappingURL=MemoryStorage.js.map
 
 /***/ },
-/* 108 */
+/* 109 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22026,7 +22106,7 @@ exports.nextPushId = function () {
 //# sourceMappingURL=NextPushId.js.map
 
 /***/ },
-/* 109 */
+/* 110 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22110,7 +22190,7 @@ exports.OnlineMonitor = OnlineMonitor;
 //# sourceMappingURL=OnlineMonitor.js.map
 
 /***/ },
-/* 110 */
+/* 111 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22342,7 +22422,7 @@ exports.Tree = Tree;
 //# sourceMappingURL=Tree.js.map
 
 /***/ },
-/* 111 */
+/* 112 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22426,7 +22506,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 //# sourceMappingURL=VisibilityMonitor.js.map
 
 /***/ },
-/* 112 */
+/* 113 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22499,7 +22579,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 //# sourceMappingURL=ChildChangeAccumulator.js.map
 
 /***/ },
-/* 113 */
+/* 114 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22604,7 +22684,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 //# sourceMappingURL=CompleteChildSource.js.map
 
 /***/ },
-/* 114 */
+/* 115 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22718,7 +22798,7 @@ exports.CancelEvent = CancelEvent;
 //# sourceMappingURL=Event.js.map
 
 /***/ },
-/* 115 */
+/* 116 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22855,7 +22935,7 @@ exports.EventGenerator = EventGenerator;
 //# sourceMappingURL=EventGenerator.js.map
 
 /***/ },
-/* 116 */
+/* 117 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23033,7 +23113,7 @@ exports.EventList = EventList;
 //# sourceMappingURL=EventQueue.js.map
 
 /***/ },
-/* 117 */
+/* 118 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23056,7 +23136,7 @@ exports.EventList = EventList;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var DataSnapshot_1 = __webpack_require__(28);
-var Event_1 = __webpack_require__(114);
+var Event_1 = __webpack_require__(115);
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(0);
 /**
@@ -23245,7 +23325,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 //# sourceMappingURL=EventRegistration.js.map
 
 /***/ },
-/* 118 */
+/* 119 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23269,12 +23349,12 @@ exports.ChildEventRegistration = ChildEventRegistration;
 Object.defineProperty(exports, "__esModule", { value: true });
 var util_1 = __webpack_require__(0);
 var util_2 = __webpack_require__(1);
-var KeyIndex_1 = __webpack_require__(16);
+var KeyIndex_1 = __webpack_require__(17);
 var PriorityIndex_1 = __webpack_require__(4);
 var ValueIndex_1 = __webpack_require__(56);
 var PathIndex_1 = __webpack_require__(55);
 var IndexedFilter_1 = __webpack_require__(33);
-var LimitedFilter_1 = __webpack_require__(121);
+var LimitedFilter_1 = __webpack_require__(122);
 var RangedFilter_1 = __webpack_require__(64);
 var util_3 = __webpack_require__(0);
 /**
@@ -23646,7 +23726,7 @@ exports.QueryParams = QueryParams;
 //# sourceMappingURL=QueryParams.js.map
 
 /***/ },
-/* 119 */
+/* 120 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23669,11 +23749,11 @@ exports.QueryParams = QueryParams;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var IndexedFilter_1 = __webpack_require__(33);
-var ViewProcessor_1 = __webpack_require__(120);
+var ViewProcessor_1 = __webpack_require__(121);
 var ChildrenNode_1 = __webpack_require__(5);
 var CacheNode_1 = __webpack_require__(24);
 var ViewCache_1 = __webpack_require__(63);
-var EventGenerator_1 = __webpack_require__(115);
+var EventGenerator_1 = __webpack_require__(116);
 var util_1 = __webpack_require__(0);
 var Operation_1 = __webpack_require__(10);
 var Change_1 = __webpack_require__(14);
@@ -23854,7 +23934,7 @@ exports.View = View;
 //# sourceMappingURL=View.js.map
 
 /***/ },
-/* 120 */
+/* 121 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23878,13 +23958,13 @@ exports.View = View;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Operation_1 = __webpack_require__(10);
 var util_1 = __webpack_require__(0);
-var ChildChangeAccumulator_1 = __webpack_require__(112);
+var ChildChangeAccumulator_1 = __webpack_require__(113);
 var Change_1 = __webpack_require__(14);
 var ChildrenNode_1 = __webpack_require__(5);
-var KeyIndex_1 = __webpack_require__(16);
+var KeyIndex_1 = __webpack_require__(17);
 var ImmutableTree_1 = __webpack_require__(32);
 var Path_1 = __webpack_require__(2);
-var CompleteChildSource_1 = __webpack_require__(113);
+var CompleteChildSource_1 = __webpack_require__(114);
 /**
  * @constructor
  * @struct
@@ -24373,7 +24453,7 @@ exports.ViewProcessor = ViewProcessor;
 //# sourceMappingURL=ViewProcessor.js.map
 
 /***/ },
-/* 121 */
+/* 122 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24615,7 +24695,7 @@ exports.LimitedFilter = LimitedFilter;
 //# sourceMappingURL=LimitedFilter.js.map
 
 /***/ },
-/* 122 */
+/* 123 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24717,7 +24797,7 @@ exports.TransportManager = TransportManager;
 //# sourceMappingURL=TransportManager.js.map
 
 /***/ },
-/* 123 */
+/* 124 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24809,7 +24889,7 @@ exports.PacketReceiver = PacketReceiver;
 //# sourceMappingURL=PacketReceiver.js.map
 
 /***/ },
-/* 124 */
+/* 125 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24835,11 +24915,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(126);
+var _windowController = __webpack_require__(127);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(125);
+var _swController = __webpack_require__(126);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -24867,7 +24947,7 @@ registerMessaging(_app.firebase);
 //# sourceMappingURL=index.js.map
 
 /***/ },
-/* 125 */
+/* 126 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25214,7 +25294,7 @@ exports.default = SWController;
 //# sourceMappingURL=sw-controller.js.map
 
 /***/ },
-/* 126 */
+/* 127 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25255,7 +25335,7 @@ var _workerPageMessage = __webpack_require__(72);
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(129);
+var _defaultSw = __webpack_require__(130);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -25267,7 +25347,7 @@ var _fcmDetails = __webpack_require__(35);
 
 var _fcmDetails2 = _interopRequireDefault(_fcmDetails);
 
-var _base64ToArrayBuffer = __webpack_require__(127);
+var _base64ToArrayBuffer = __webpack_require__(128);
 
 var _base64ToArrayBuffer2 = _interopRequireDefault(_base64ToArrayBuffer);
 
@@ -25627,7 +25707,7 @@ exports.default = WindowController;
 //# sourceMappingURL=window-controller.js.map
 
 /***/ },
-/* 127 */
+/* 128 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -25666,7 +25746,7 @@ exports.default = function (base64String) {
 //# sourceMappingURL=base64-to-array-buffer.js.map
 
 /***/ },
-/* 128 */
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25754,7 +25834,7 @@ exports.cleanV1 = cleanV1;
 //# sourceMappingURL=clean-v1-undefined.js.map
 
 /***/ },
-/* 129 */
+/* 130 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -25786,7 +25866,7 @@ exports.default = {
 //# sourceMappingURL=default-sw.js.map
 
 /***/ },
-/* 130 */
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25827,7 +25907,7 @@ var _arrayBufferToBase = __webpack_require__(34);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
-var _cleanV1Undefined = __webpack_require__(128);
+var _cleanV1Undefined = __webpack_require__(129);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26090,7 +26170,7 @@ exports.default = TokenDetailsModel;
 //# sourceMappingURL=token-details-model.js.map
 
 /***/ },
-/* 131 */
+/* 132 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26242,20 +26322,20 @@ exports.default = VapidDetailsModel;
 //# sourceMappingURL=vapid-details-model.js.map
 
 /***/ },
-/* 132 */
+/* 133 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 'use strict';
 
-__webpack_require__(133);
-
 __webpack_require__(134);
 
 __webpack_require__(135);
 
+__webpack_require__(136);
+
 /***/ },
-/* 133 */
+/* 134 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26291,14 +26371,14 @@ var __global = function () {
 // Polyfill Promise
 if (typeof Promise === 'undefined') {
     // HACK: TS throws an error if I attempt to use 'dot-notation'
-    __global['Promise'] = Promise = __webpack_require__(169);
+    __global['Promise'] = Promise = __webpack_require__(170);
 }
 
 //# sourceMappingURL=promise.js.map
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(84)))
 
 /***/ },
-/* 134 */
+/* 135 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -26364,7 +26444,7 @@ if (!Array.prototype.find) {
 //# sourceMappingURL=find.js.map
 
 /***/ },
-/* 135 */
+/* 136 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -26430,7 +26510,7 @@ if (!Array.prototype.findIndex) {
 //# sourceMappingURL=findIndex.js.map
 
 /***/ },
-/* 136 */
+/* 137 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26449,11 +26529,11 @@ var _string = __webpack_require__(39);
 
 var _taskenums = __webpack_require__(76);
 
-var _xhriopool = __webpack_require__(148);
+var _xhriopool = __webpack_require__(149);
 
 var _reference = __webpack_require__(78);
 
-var _service = __webpack_require__(149);
+var _service = __webpack_require__(150);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26497,7 +26577,7 @@ registerStorage(_app2.default);
 //# sourceMappingURL=index.js.map
 
 /***/ },
-/* 137 */
+/* 138 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26552,7 +26632,7 @@ function async(f) {
  */
 
 /***/ },
-/* 138 */
+/* 139 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26571,7 +26651,7 @@ var _error2 = __webpack_require__(8);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(140);
+var _failrequest = __webpack_require__(141);
 
 var _location = __webpack_require__(27);
 
@@ -26579,7 +26659,7 @@ var _promise_external = __webpack_require__(13);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(146);
+var _requestmap = __webpack_require__(147);
 
 var _type = __webpack_require__(7);
 
@@ -26697,7 +26777,7 @@ exports.AuthWrapper = AuthWrapper;
 //# sourceMappingURL=authwrapper.js.map
 
 /***/ },
-/* 139 */
+/* 140 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -26825,7 +26905,7 @@ function stop(id) {
 //# sourceMappingURL=backoff.js.map
 
 /***/ },
-/* 140 */
+/* 141 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26868,7 +26948,7 @@ exports.FailRequest = FailRequest;
 //# sourceMappingURL=failrequest.js.map
 
 /***/ },
-/* 141 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26944,7 +27024,7 @@ function sliceBlob(blob, start, end) {
 //# sourceMappingURL=fs.js.map
 
 /***/ },
-/* 142 */
+/* 143 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26997,7 +27077,7 @@ function jsonObjectOrNull(s) {
  */
 
 /***/ },
-/* 143 */
+/* 144 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27052,7 +27132,7 @@ exports.Observer = Observer;
 //# sourceMappingURL=observer.js.map
 
 /***/ },
-/* 144 */
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27074,7 +27154,7 @@ var _array = __webpack_require__(37);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(139);
+var _backoff = __webpack_require__(140);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -27307,7 +27387,7 @@ function makeRequest(requestInfo, authToken, pool) {
 //# sourceMappingURL=request.js.map
 
 /***/ },
-/* 145 */
+/* 146 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -27349,7 +27429,7 @@ exports.RequestInfo = RequestInfo;
 //# sourceMappingURL=requestinfo.js.map
 
 /***/ },
-/* 146 */
+/* 147 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27426,7 +27506,7 @@ exports.RequestMap = RequestMap;
 //# sourceMappingURL=requestmap.js.map
 
 /***/ },
-/* 147 */
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27587,7 +27667,7 @@ exports.NetworkXhrIo = NetworkXhrIo;
 //# sourceMappingURL=xhrio_network.js.map
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27598,7 +27678,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.XhrIoPool = undefined;
 
-var _xhrio_network = __webpack_require__(147);
+var _xhrio_network = __webpack_require__(148);
 
 /**
  * Factory-like class for creating XhrIo instances.
@@ -27629,7 +27709,7 @@ exports.XhrIoPool = XhrIoPool;
 //# sourceMappingURL=xhriopool.js.map
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27644,7 +27724,7 @@ var _args = __webpack_require__(36);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(138);
+var _authwrapper = __webpack_require__(139);
 
 var _location = __webpack_require__(27);
 
@@ -27652,7 +27732,7 @@ var _promise_external = __webpack_require__(13);
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(144);
+var _request = __webpack_require__(145);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -27800,7 +27880,7 @@ exports.ServiceInternals = ServiceInternals;
 //# sourceMappingURL=service.js.map
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27815,9 +27895,9 @@ var _taskenums = __webpack_require__(76);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(143);
+var _observer = __webpack_require__(144);
 
-var _tasksnapshot = __webpack_require__(151);
+var _tasksnapshot = __webpack_require__(152);
 
 var _args = __webpack_require__(36);
 
@@ -27827,7 +27907,7 @@ var _array = __webpack_require__(37);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(137);
+var _async = __webpack_require__(138);
 
 var _error = __webpack_require__(8);
 
@@ -28378,7 +28458,7 @@ exports.UploadTask = UploadTask;
 //# sourceMappingURL=task.js.map
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -28419,7 +28499,7 @@ exports.UploadTaskSnapshot = UploadTaskSnapshot;
 //# sourceMappingURL=tasksnapshot.js.map
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -28501,7 +28581,7 @@ exports.patchProperty = patchProperty;
 //# sourceMappingURL=deepCopy.js.map
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -28567,7 +28647,7 @@ exports.Deferred = Deferred;
 //# sourceMappingURL=deferred.js.map
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28634,7 +28714,7 @@ exports.isNodeSdk = function () {
 //# sourceMappingURL=environment.js.map
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -28721,7 +28801,7 @@ exports.ErrorFactory = ErrorFactory;
 //# sourceMappingURL=errors.js.map
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -28783,7 +28863,7 @@ exports.Hash = Hash;
 //# sourceMappingURL=hash.js.map
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28921,7 +29001,7 @@ exports.isAdmin = function (token) {
 //# sourceMappingURL=jwt.js.map
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28986,7 +29066,7 @@ exports.querystringDecode = function (querystring) {
 //# sourceMappingURL=query.js.map
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29009,7 +29089,7 @@ exports.querystringDecode = function (querystring) {
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = __webpack_require__(3);
-var hash_1 = __webpack_require__(156);
+var hash_1 = __webpack_require__(157);
 /**
  * @fileoverview SHA-1 cryptographic hash.
  * Variable names follow the notation in FIPS PUB 180-3:
@@ -29249,7 +29329,7 @@ exports.Sha1 = Sha1;
 //# sourceMappingURL=sha1.js.map
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -29468,7 +29548,7 @@ function noop() {}
 //# sourceMappingURL=subscribe.js.map
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29562,7 +29642,7 @@ exports.stringLength = function (str) {
 //# sourceMappingURL=utf8.js.map
 
 /***/ },
-/* 162 */
+/* 163 */
 /***/ function(module, exports) {
 
 "use strict";
@@ -29666,32 +29746,6 @@ exports.validateContextObject = validateContextObject;
 //# sourceMappingURL=validation.js.map
 
 /***/ },
-/* 163 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-'use strict';
-
-/**
- * Copyright 2017 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-__webpack_require__(132);
-module.exports = __webpack_require__(9).default;
-
-/***/ },
 /* 164 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -29714,7 +29768,8 @@ module.exports = __webpack_require__(9).default;
  * limitations under the License.
  */
 
-__webpack_require__(89);
+__webpack_require__(133);
+module.exports = __webpack_require__(9).default;
 
 /***/ },
 /* 165 */
@@ -29739,7 +29794,7 @@ __webpack_require__(89);
  * limitations under the License.
  */
 
-module.exports = __webpack_require__(90);
+__webpack_require__(90);
 
 /***/ },
 /* 166 */
@@ -29764,13 +29819,7 @@ module.exports = __webpack_require__(90);
  * limitations under the License.
  */
 
-var firebase = __webpack_require__(163);
-__webpack_require__(164);
-__webpack_require__(165);
-__webpack_require__(167);
-__webpack_require__(168);
-
-module.exports = firebase;
+module.exports = __webpack_require__(91);
 
 /***/ },
 /* 167 */
@@ -29795,7 +29844,13 @@ module.exports = firebase;
  * limitations under the License.
  */
 
-__webpack_require__(124);
+var firebase = __webpack_require__(164);
+__webpack_require__(165);
+__webpack_require__(166);
+__webpack_require__(168);
+__webpack_require__(169);
+
+module.exports = firebase;
 
 /***/ },
 /* 168 */
@@ -29820,10 +29875,35 @@ __webpack_require__(124);
  * limitations under the License.
  */
 
-__webpack_require__(136);
+__webpack_require__(125);
 
 /***/ },
 /* 169 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';
+
+/**
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+__webpack_require__(137);
+
+/***/ },
+/* 170 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30056,7 +30136,7 @@ module.exports = Promise;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(42).setImmediate))
 
 /***/ },
-/* 170 */
+/* 171 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30066,7 +30146,7 @@ var _chat = __webpack_require__(85);
 
 var _chat2 = _interopRequireDefault(_chat);
 
-var _register = __webpack_require__(87);
+var _register = __webpack_require__(88);
 
 var _register2 = _interopRequireDefault(_register);
 
@@ -30074,7 +30154,11 @@ var _login = __webpack_require__(86);
 
 var _login2 = _interopRequireDefault(_login);
 
-var _FirebaseRepository = __webpack_require__(18);
+var _presence = __webpack_require__(87);
+
+var _presence2 = _interopRequireDefault(_presence);
+
+var _FirebaseRepository = __webpack_require__(16);
 
 var _FirebaseRepository2 = _interopRequireDefault(_FirebaseRepository);
 
@@ -30130,10 +30214,11 @@ function sendBtn() {
   var message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    message = ""; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
+    message = " "; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
     var messageList = document.querySelectorAll(".new-message");
     messageList[0].scrollBottom = messageList[0].scrollHeight; // försöker scrolla till botten för att se nya meddelandet
   } else if (message.length > 0 && registrering.value) {
+    message = " ";
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
 }
@@ -30188,33 +30273,7 @@ showChatroom.addEventListener("click", function () {
   document.getElementById("introduktion").style.display = "none";
 });
 
-/** */
-/**/
-/*** varför blir Firebase undefined?????*/
-
-var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
-var userRef = listRef.push();
-
-//add online user to presence list
-
-var presenceRef = new Firebase("https://chatapp-151d0.firebaseio.com/.info/connected");
-presenceRef.on("value", function (snap) {
-  if (snap.val()) {
-    userRef.set(true);
-    //remove user from preference list when disconnected by using the remove() method
-
-    userRef.onDisconnect().remove();
-  }
-});
-
-//list our objects in presence list as online users in our   element
-var onlineList;
-onlineList = document.getElementById("online-users");
-listRef.on("value", function (snap) {
-  onlineList.text(snap.numChildren());
-});
-
-/*** */
+presence();
 
 /***/ }
 /******/ ]);
