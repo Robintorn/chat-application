@@ -30277,14 +30277,8 @@ function sendBtn() {
   var registrering = document.getElementById("registeremail");
   var chat = new _chat2.default();
   var message = document.getElementById("message").value;
-  if (message.length > 0 && email.value) {
-    chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    message = " "; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
-    var messageList = document.querySelectorAll(".new-message");
-    messageList[0].scrollBottom = messageList[0].scrollHeight; // försöker scrolla till botten för att se nya meddelandet
-  } else if (message.length > 0 && registrering.value) {
-    message = " ";
-    chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
+  if (message.length > 0 && (email.value || registrering.value)) {
+    chat.sendMessage(chatRoomUserIsIn["current"], message, email.value > 0 ? email.value : registrering.value);
   }
 }
 
