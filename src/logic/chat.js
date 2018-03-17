@@ -34,7 +34,6 @@ class Chat extends FirebaseRepository {
     this.pushData("/messages/room/" + room, {
       message: msg,
       displayName: user,
-      // this really need to be rewritten
       time: today
     });
   }
@@ -48,7 +47,9 @@ class Chat extends FirebaseRepository {
         console.log(response);
         func(`
                     <div class="new-message">
-                    <span>${response["displayName"]}| ${response["time"]}</span>
+                    <span>${response["displayName"]} | ${
+          response["time"]
+        }</span>
                      <p class="p-message">${response["message"]}</p>
                     </div>
                 `);
@@ -58,7 +59,9 @@ class Chat extends FirebaseRepository {
         console.log(response);
         func(`
                     <div class="new-message">
-                    <span>${response["displayName"]}| ${response["time"]}</span>
+                    <span>${response["displayName"]} | ${
+          response["time"]
+        }</span>
                     
                         <p class="p-message">${response["message"]}</p>
                     </div>

@@ -1,27 +1,29 @@
 import FirebaseRepository from "../database/FirebaseRepository";
 
 class Register extends FirebaseRepository {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    register(email, password){
-        this.auth("createUserWithEmailPass", email, password, (user) => {
-            if(user){
-                document.getElementById("introduktion").style.display = "block";
-                document.getElementById("register").style.display = "none";
-                document.getElementById("animation").style.display = "block";
-                document.getElementById("logout").style.display = "block";
-                setTimeout(function(){document.getElementById("animation").style.display = "none"}, 3000);
-                setTimeout(function(){document.getElementById("nav").style.display = "block"}, 3000);
-                document.getElementById("loggedInUser").style.display = "block";
-                document.getElementById("span").innerHTML =
-                "Logged in as ";
-                document.getElementById("id").innerHTML =
-                  email;
-            }
-        });
-    }
+  register(email, password) {
+    this.auth("createUserWithEmailPass", email, password, user => {
+      if (user) {
+        document.getElementById("introduktion").style.display = "block";
+        document.getElementById("register").style.display = "none";
+        document.getElementById("animation").style.display = "block";
+        document.getElementById("logout").style.display = "block";
+        setTimeout(function() {
+          document.getElementById("animation").style.display = "none";
+        }, 3000);
+        setTimeout(function() {
+          document.getElementById("nav").style.display = "block";
+        }, 3000);
+        document.getElementById("loggedInUser").style.display = "block";
+        document.getElementById("span").innerHTML = "Logged in as ";
+        document.getElementById("id").innerHTML = email;
+      }
+    });
+  }
 }
 
 export default Register;

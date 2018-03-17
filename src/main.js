@@ -1,6 +1,7 @@
 import Chat from "./logic/chat";
 import Register from "./logic/register";
 import Login from "./logic/login";
+import Presence from "./logic/presence";
 import FirebaseRepo from "./database/FirebaseRepository";
 
 /**/
@@ -55,15 +56,19 @@ function sendBtn() {
   let message = document.getElementById("message").value;
   if (message.length > 0 && email.value) {
     chat.sendMessage(chatRoomUserIsIn["current"], message, email.value);
-    message = ""; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
+    message = " "; // tömmer fältet efter att man skickar meddelande (har slutat funka av okänd anledning?)
     var messageList = document.querySelectorAll(".new-message");
     messageList[0].scrollBottom = messageList[0].scrollHeight; // försöker scrolla till botten för att se nya meddelandet
   } else if (message.length > 0 && registrering.value) {
+    message = " ";
     chat.sendMessage(chatRoomUserIsIn["current"], message, registrering.value);
   }
 }
 
 init();
+
+let presence = new Presence();
+presence.presence();
 
 let login = document.getElementById("login");
 let loggit = document.getElementById("github-login");
@@ -112,33 +117,3 @@ showChatroom.addEventListener("click", function() {
   document.getElementById("chat").style.display = "block";
   document.getElementById("introduktion").style.display = "none";
 });
-
-/** */
-/**/
-/*** varför blir Firebase undefined?????*/
-
-var listRef = new Firebase("https://chatapp-151d0.firebaseio.com/presence/");
-var userRef = listRef.push();
-
-//add online user to presence list
-
-var presenceRef = new Firebase(
-  "https://chatapp-151d0.firebaseio.com/.info/connected"
-);
-presenceRef.on("value", function(snap) {
-  if (snap.val()) {
-    userRef.set(true);
-    //remove user from preference list when disconnected by using the remove() method
-
-    userRef.onDisconnect().remove();
-  }
-});
-
-//list our objects in presence list as online users in our   element
-var onlineList;
-onlineList = document.getElementById("online-users");
-listRef.on("value", function(snap) {
-  onlineList.text(snap.numChildren());
-});
-
-/*** */
