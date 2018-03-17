@@ -8,13 +8,15 @@
 </head>
 
 <body>
-    
+
     <div id="loggedInUser" style="display: none;">
         <div id="top">
-                <img src="images/logo.png" />
-                <div class="flex"><span id="span"> </span><span id="id"> </span>
+            <img src="images/logo.png" />
+            <div class="flex">
+                <span id="span"> </span>
+                <span id="id"> </span>
                 <button id="logout" class="btn btn-primary btn-large" style="display: none;">Logout</button>
-                </div>
+            </div>
         </div>
     </div>
 
@@ -43,7 +45,7 @@
 
     <section id="introduktion" style="display: none;">
 
-         
+
         <div id="nav" style="display: none;">
             <div class="agilt">
                 <a id="show-chatroom">Go to Chat</a>
@@ -57,30 +59,33 @@
                 <li></li>
             </ul>
         </nav>
-  
+
     </section>
 
     <section id="chat" style="display: none;">
         <div id="style-chat">
 
-                <div id="chat-navigation">
-                        
-                                </div>
-                        
-                                <div id="chat-window" style="overflow-y:auto;">
-                        
-                                </div>
-                        
-                                <div id="reply" style="display: none;">
-                                    <div id="style-reply">
-                                            <textarea id="message" placeholder="Write here to chat"></textarea>
-                                            <button id="send" class="btn btn-primary">Send</button>        
-                                    </div>
-                             </div>
+            <div id="chat-navigation">
+
+            </div>
+            <div id="online-users">
+
+            </div>
+
+            <div id="chat-window" style="overflow:auto;">
+
+            </div>
+
+            <div id="reply" style="display: none;">
+                <div id="style-reply">
+                    <textarea id="message" placeholder="Write here to chat"></textarea>
+                    <button id="send" class="btn btn-primary">Send</button>
+                </div>
+            </div>
         </div>
-     
+
     </section>
-    
+
     <script src="../build/main.bundle.js"></script>
 </body>
 
