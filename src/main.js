@@ -67,6 +67,9 @@ function sendBtn() {
 
 init();
 
+let presence = new Presence();
+presence.presence();
+
 let login = document.getElementById("login");
 let loggit = document.getElementById("github-login");
 let signup = document.getElementById("signup");
@@ -90,8 +93,6 @@ signup.addEventListener("click", () => {
   let password2 = document.getElementById("registerpassword2");
   let register = new Register();
   register.register(email.value, password.value);
-  let presence = new Presence();
-  presence.presence();
 });
 
 logout.addEventListener("click", () => {

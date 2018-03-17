@@ -14833,34 +14833,51 @@ var Presence = function (_FirebaseRepository) {
   }
   /*/
   /**/
-  /*** varför blir Firebase undefined?????*/
+  /*** varför funkar det inte?????*/
 
 
   _createClass(Presence, [{
     key: "presence",
     value: function presence() {
-      var listRef = this.database("https://chatapp-151d0.firebaseio.com/presence/");
-      var userRef = listRef.push();
+      var myConnectionsRef = this.database().ref("users/*/connections");
 
-      //add online user to presence list
+      var connectedRef = this.database().ref(".info/connected");
+      connectedRef.on("value", function (snap) {
+        if (snap.val() === true) {
+          var onlineList;
+          onlineList = document.getElementById("online-users");
+          connectedRef.on("value", function (snap) {
+            onlineList.innerHTML = snap.numChildren() + " users connected";
+          });
+          var con = myConnectionsRef.push();
 
-      var presenceRef = this.database("https://chatapp-151d0.firebaseio.com/.info/connected");
+          // When I disconnect, remove this device
+          con.onDisconnect().remove();
 
-      presenceRef.on("value", function (snap) {
-        if (snap.val()) {
-          userRef.set(true);
-          //remove user from preference list when disconnected by using the remove() method
+          // Add this device to my connections list
+          // this value could contain info about the device or a timestamp too
+          con.set(true);
 
-          userRef.onDisconnect().remove();
+          // When I disconnect, update the last time I was seen online
         }
       });
-      console.log("presence");
-      //list our objects in presence list as online users in our   element
-      var onlineList;
-      onlineList = document.getElementById("online-users");
-      listRef.on("value", function (snap) {
-        onlineList.text(snap.numChildren());
-      });
+
+      // var amOnline = this.database(
+      //   "https://chatapp-151d0.firebaseio.com/.info/connected"
+      // );
+      // var userRef = this.database(
+      //   "https://chatapp-151d0.firebaseio.com/presence/" + uid
+      // );
+      // amOnline.on("value", function(snapshot) {
+      //   if (snapshot.val()) {
+      //     userRef.onDisconnect().remove();
+      //     userRef.set(true);
+
+      //     var onlineList;
+      //     onlineList = document.getElementById("online-users");
+      //     onlineList.innerHTML = `<p>${userRef}</p>`;
+      //   }
+      // });
     }
   }]);
 
@@ -14870,6 +14887,54 @@ var Presence = function (_FirebaseRepository) {
 exports.default = Presence;
 
 /**/
+
+/* alternative code */
+// import FirebaseRepository from "../database/FirebaseRepository";
+// // var listRef;
+// // var userRef;
+// // var presenceRef;
+
+// class Presence extends FirebaseRepository {
+//   constructor() {
+//     super();
+//   }
+//   /*/
+//   /**/
+//   /*** varför funkar det inte?????*/
+//   presence() {
+
+//     var listRef = this.database(
+//       "https://chatapp-151d0.firebaseio.com/presence/"
+//     );
+//     var userRef = listRef.push();
+
+//     //add online user to presence list
+
+//     var presenceRef = this.database(
+//       "https://chatapp-151d0.firebaseio.com/.info/connected"
+//     );
+
+//     presenceRef.on("value", function(snap) {
+//       if (snap.val()) {
+//         userRef.set(true);
+//         //remove user from preference list when disconnected by using the remove() method
+
+//         userRef.onDisconnect().remove();
+//       }
+//     });
+//     console.log("presence");
+//     //list our objects in presence list as online users in our   element
+//     var onlineList;
+//     onlineList = document.getElementById("online-users");
+//     listRef.on("value", function(snap) {
+//       onlineList.text(snap.numChildren());
+//     });
+//   }
+// }
+
+// export default Presence;
+
+// /**/
 
 /***/ },
 /* 88 */
@@ -30225,6 +30290,9 @@ function sendBtn() {
 
 init();
 
+var presence = new _presence2.default();
+presence.presence();
+
 var login = document.getElementById("login");
 var loggit = document.getElementById("github-login");
 var signup = document.getElementById("signup");
@@ -30248,8 +30316,6 @@ signup.addEventListener("click", function () {
   var password2 = document.getElementById("registerpassword2");
   var register = new _register2.default();
   register.register(email.value, password.value);
-  var presence = new _presence2.default();
-  presence.presence();
 });
 
 logout.addEventListener("click", function () {
