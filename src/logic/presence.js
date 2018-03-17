@@ -6,7 +6,9 @@ class Presence extends FirebaseRepository {
   }
 
   presence() {
-    var myConnectionsRef = this.database().ref("users/*/connections");
+    // var myConnectionsRef = this.database().ref("users/*/connections");
+    var myConnectionsRef = this.database().ref("/presence/");
+    var con = myConnectionsRef.push();
 
     var connectedRef = this.database().ref(".info/connected");
     connectedRef.on("value", function(snap) {
@@ -16,7 +18,6 @@ class Presence extends FirebaseRepository {
         connectedRef.on("value", function(snap) {
           onlineList.innerHTML = snap.numChildren() + " users connected";
         });
-        var con = myConnectionsRef.push();
 
         con.onDisconnect().remove(); // When I disconnect, remove this device
 

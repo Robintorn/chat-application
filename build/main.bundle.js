@@ -14831,8 +14831,8 @@ var Presence = function (_FirebaseRepository) {
   _createClass(Presence, [{
     key: "presence",
     value: function presence() {
-      var myConnectionsRef = this.database().ref("users/*/connections");
-
+      var myConnectionsRef = this.database().ref("/presence/*");
+      var con = myConnectionsRef.push();
       var connectedRef = this.database().ref(".info/connected");
       connectedRef.on("value", function (snap) {
         if (snap.val() === true) {
@@ -14841,7 +14841,6 @@ var Presence = function (_FirebaseRepository) {
           connectedRef.on("value", function (snap) {
             onlineList.innerHTML = snap.numChildren() + " users connected";
           });
-          var con = myConnectionsRef.push();
 
           con.onDisconnect().remove(); // When I disconnect, remove this device
 
