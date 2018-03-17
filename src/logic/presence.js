@@ -4,33 +4,53 @@ class Presence extends FirebaseRepository {
   constructor() {
     super();
   }
-
   presence() {
-    // var myConnectionsRef = this.database().ref("users/*/connections");
-    var myConnectionsRef = this.database().ref("/presence/");
+    //   var myConnectionsRef = this.database().ref("/presence/"); //mix av metod 1 och metod 3
+    // var myConnectionsRef = this.database().ref("users/*/connections"); //metod 3 (ny)
+    var myConnectionsRef = this.database().ref("USERS_ONLINE"); //metod 4
     var con = myConnectionsRef.push();
 
     var connectedRef = this.database().ref(".info/connected");
     connectedRef.on("value", function(snap) {
-      if (snap.val() === true) {
+      if (snap.val()) {
+        con.set(true);
+
         var onlineList;
         onlineList = document.getElementById("online-users");
-        connectedRef.on("value", function(snap) {
-          onlineList.innerHTML = snap.numChildren() + " users connected";
-        });
+        onlineList.innerHTML = snap.numChildren() + " users connected";
 
         con.onDisconnect().remove(); // When I disconnect, remove this device
-
-        con.set(true); // Add this device to my connections list
-        // this value could contain info about the device or a timestamp too
       }
     });
   }
 }
-
 export default Presence;
 
-/******************** alternative code 1 ******************/
+/******************** alternative code 3 ******************/
+
+// presence() {
+//   // var myConnectionsRef = this.database().ref("users/*/connections"); //metod 3 (ny)
+//   var myConnectionsRef = this.database().ref("/presence/"); //mix av metod 1 och metod 3
+//   var con = myConnectionsRef.push();
+
+//   var connectedRef = this.database().ref(".info/connected");
+//   connectedRef.on("value", function(snap) {
+//     if (snap.val() === true) {
+//       con.set(true);
+//       con.onDisconnect().remove(); // When I disconnect, remove this device
+//     }
+//   });
+
+//   var onlineList;
+//   onlineList = document.getElementById("online-users");
+//   connectedRef.on("value", function(snap) {
+//     onlineList.innerHTML = snap.numChildren() + " users connected";
+//     con.set(true); // Add this device to my connections list
+//   });
+// }
+// }
+
+/******************** alternative code 2 ******************/
 
 // import FirebaseRepository from "../database/FirebaseRepository";
 
@@ -60,7 +80,7 @@ export default Presence;
 //   }
 // }
 
-/******************** alternative code 2 ******************/
+/******************** alternative code 1 ******************/
 
 // import FirebaseRepository from "../database/FirebaseRepository";
 // // var listRef;
