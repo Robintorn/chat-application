@@ -77,6 +77,8 @@ login.addEventListener("click", () => {
   let password = document.getElementById("password");
   let login = new Login();
   login.login(email.value, password.value);
+  let presence = new Presence();
+  presence.presence();
 });
 
 loggit.addEventListener("click", () => {
@@ -90,6 +92,8 @@ signup.addEventListener("click", () => {
   let password2 = document.getElementById("registerpassword2");
   let register = new Register();
   register.register(email.value, password.value);
+  let presence = new Presence();
+  presence.presence();
 });
 
 logout.addEventListener("click", () => {
@@ -114,5 +118,3 @@ showChatroom.addEventListener("click", function() {
   document.getElementById("chat").style.display = "block";
   document.getElementById("introduktion").style.display = "none";
 });
-
-presence();

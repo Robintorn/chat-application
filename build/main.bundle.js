@@ -14831,7 +14831,7 @@ var Presence = function (_FirebaseRepository) {
 
     return _possibleConstructorReturn(this, (Presence.__proto__ || Object.getPrototypeOf(Presence)).call(this));
   }
-  /** */
+  /*/
   /**/
   /*** varför blir Firebase undefined?????*/
 
@@ -14839,27 +14839,33 @@ var Presence = function (_FirebaseRepository) {
   _createClass(Presence, [{
     key: "presence",
     value: function presence() {
-      listRef = this.database("https://chatapp-151d0.firebaseio.com/presence/");
-      userRef = listRef.push();
+      var _this2 = this;
 
-      //add online user to presence list
+      this.auth("createUserWithEmailPass", email, password, function (user) {
+        if (user) {
+          listRef = _this2.database("https://chatapp-151d0.firebaseio.com/presence/");
+          userRef = listRef.push();
 
-      presenceRef = this.database("https://chatapp-151d0.firebaseio.com/.info/connected");
+          //add online user to presence list
 
-      presenceRef.on("value", function (snap) {
-        if (snap.val()) {
-          userRef.set(true);
-          //remove user from preference list when disconnected by using the remove() method
+          presenceRef = _this2.database("https://chatapp-151d0.firebaseio.com/.info/connected");
 
-          userRef.onDisconnect().remove();
+          presenceRef.on("value", function (snap) {
+            if (snap.val()) {
+              userRef.set(true);
+              //remove user from preference list when disconnected by using the remove() method
+
+              userRef.onDisconnect().remove();
+            }
+          });
+          console.log("presence");
+          //list our objects in presence list as online users in our   element
+          var onlineList;
+          onlineList = document.getElementById("online-users");
+          listRef.on("value", function (snap) {
+            onlineList.text(snap.numChildren());
+          });
         }
-      });
-
-      //list our objects in presence list as online users in our   element
-      var onlineList;
-      onlineList = document.getElementById("online-users");
-      listRef.on("value", function (snap) {
-        onlineList.text(snap.numChildren());
       });
     }
   }]);
@@ -14879,7 +14885,7 @@ exports.default = Presence;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -14897,38 +14903,38 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Register = function (_FirebaseRepository) {
-    _inherits(Register, _FirebaseRepository);
+  _inherits(Register, _FirebaseRepository);
 
-    function Register() {
-        _classCallCheck(this, Register);
+  function Register() {
+    _classCallCheck(this, Register);
 
-        return _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this));
-    }
+    return _possibleConstructorReturn(this, (Register.__proto__ || Object.getPrototypeOf(Register)).call(this));
+  }
 
-    _createClass(Register, [{
-        key: "register",
-        value: function register(email, password) {
-            this.auth("createUserWithEmailPass", email, password, function (user) {
-                if (user) {
-                    document.getElementById("introduktion").style.display = "block";
-                    document.getElementById("register").style.display = "none";
-                    document.getElementById("animation").style.display = "block";
-                    document.getElementById("logout").style.display = "block";
-                    setTimeout(function () {
-                        document.getElementById("animation").style.display = "none";
-                    }, 3000);
-                    setTimeout(function () {
-                        document.getElementById("nav").style.display = "block";
-                    }, 3000);
-                    document.getElementById("loggedInUser").style.display = "block";
-                    document.getElementById("span").innerHTML = "Logged in as ";
-                    document.getElementById("id").innerHTML = email;
-                }
-            });
+  _createClass(Register, [{
+    key: "register",
+    value: function register(email, password) {
+      this.auth("createUserWithEmailPass", email, password, function (user) {
+        if (user) {
+          document.getElementById("introduktion").style.display = "block";
+          document.getElementById("register").style.display = "none";
+          document.getElementById("animation").style.display = "block";
+          document.getElementById("logout").style.display = "block";
+          setTimeout(function () {
+            document.getElementById("animation").style.display = "none";
+          }, 3000);
+          setTimeout(function () {
+            document.getElementById("nav").style.display = "block";
+          }, 3000);
+          document.getElementById("loggedInUser").style.display = "block";
+          document.getElementById("span").innerHTML = "Logged in as ";
+          document.getElementById("id").innerHTML = email;
         }
-    }]);
+      });
+    }
+  }]);
 
-    return Register;
+  return Register;
 }(_FirebaseRepository3.default);
 
 exports.default = Register;
@@ -30235,6 +30241,8 @@ login.addEventListener("click", function () {
   var password = document.getElementById("password");
   var login = new _login2.default();
   login.login(email.value, password.value);
+  var presence = new _presence2.default();
+  presence.presence(user);
 });
 
 loggit.addEventListener("click", function () {
@@ -30248,6 +30256,8 @@ signup.addEventListener("click", function () {
   var password2 = document.getElementById("registerpassword2");
   var register = new _register2.default();
   register.register(email.value, password.value);
+  var presence = new _presence2.default();
+  presence.presence(user);
 });
 
 logout.addEventListener("click", function () {
@@ -30272,8 +30282,6 @@ showChatroom.addEventListener("click", function () {
   document.getElementById("chat").style.display = "block";
   document.getElementById("introduktion").style.display = "none";
 });
-
-presence();
 
 /***/ }
 /******/ ]);
