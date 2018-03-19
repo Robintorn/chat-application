@@ -1,12 +1,4 @@
-### Usage
+### Public Link
 
-Edit your code in src
-Edit html in build
+https://robintorn.github.io/chat-application/src/index.html
 
-```Run npm install```
-
-### When you've done edits
-``npm run start``
-
-##### Navigate to 
-``http://localhost:8080/build``
